@@ -5,7 +5,6 @@ import React from "react";
 function MatrixCell({onCellChange, value}) {
   return (
     <td>
-      <label> Value: </label>
           <input
               type='number'
               id="MatrixCellInput"
@@ -58,7 +57,7 @@ export default function Game() {
     [0, 0, 0],
   ]);
   const [matrixSize, setMatrixSize] = useState(3);
-  const [matrixSizeInput, setMatrixSizeInput] = useState('');
+  const [matrixSizeInput, setMatrixSizeInput] = useState(3);
   
   const clearCells = useCallback(() => {
     setMatrix(Array.from({ length: matrixSize }, () => Array.from({ length: matrixSize }, () => 0)));
@@ -73,7 +72,7 @@ export default function Game() {
        parsedMatrixSizeInput >= 2)
     {
       setMatrixSize(parsedMatrixSizeInput);     
-      setMatrixSizeInput('');
+      // setMatrixSizeInput('');
 
     }
     else{
@@ -103,7 +102,7 @@ export default function Game() {
       </div>
       <div className="game-board">    
       <label>
-          <input type="number" step="1" min={"2" } value={matrixSizeInput} onChange={(e) => 
+          <input type="number" step="1" min="2" value={matrixSizeInput} onChange={(e) => 
             setMatrixSizeInput(e.target.value)} />
         </label>
       <button type="button" onClick={updateMatrixSize}>
