@@ -294,6 +294,11 @@ class Fst:
         return T
 
     def produce_migration(self, x0=None, bounds=(0, 2), conservative=True) -> tuple:
+        """
+        generates a possible corresponding migration matrix according to Xiran's paper and returns it,
+        and details about the numerical solution used to solve it (using Scipy's minimize function).
+        returns: tuple (M, solution). M is the migration matrix, and solution is a variable containing 
+        details about the solution found by the minimize algorithm of Scipy library."""
         n, nc2 = self.shape, comb(self.shape, 2)
         if x0 is None:
             x0 = np.random.uniform(low=0, high=2 * n, size=(n ** 2,))
@@ -645,13 +650,28 @@ def reassemble_matrix(sub_matrices: list, connected_components: list, which: str
 
     return adjacency_matrix
 
-def transform_matrix(matrix_json):
+def fst_to_migration(f:np.ndarray) -> np.ndarray:
+    """
+    Receives a Fst matrix(a squared, positive matrix with zeroes on the diagonal) and returns
+    a possible corresping migration matrix according to Xiran's paper."""
+    F = Fst(f)
+    return F.produce_migration()[0]
+
+def transform_m_to_f(matrix_json):
     # Convert JSON to numpy array
-    print(f"This is the input matrix in the py code: {matrix_json}")
     matrix_list = json.loads(matrix_json)
-    print(f"This is matrix_list: {matrix_list}")
     matrix = np.array(matrix_list, dtype=float)
     result_matrix = np.round(m_to_f(matrix), decimals=2)
+    # Convert numpy array back to JSON
+    result_list = result_matrix.tolist()
+    result_json = {'matrix':result_list}
+    return json.dumps(result_json)
+
+def transform_f_to_m(matrix_json):
+    # Convert JSON to numpy array
+    matrix_list = json.loads(matrix_json)
+    matrix = np.array(matrix_list, dtype=float)
+    result_matrix = np.round(fst_to_migration(matrix), decimals=2)
     # Convert numpy array back to JSON
     result_list = result_matrix.tolist()
     result_json = {'matrix':result_list}
