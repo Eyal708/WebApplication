@@ -658,10 +658,13 @@ def fst_to_migration(f:np.ndarray) -> np.ndarray:
     return F.produce_migration()[0]
 
 def transform_m_to_f(matrix_json):
+    ##!!!this function might fail if the matrix is not conservative!!! this will cause unexpected results.
     # Convert JSON to numpy array
+    print(f"This is from python code {matrix_json}")
     matrix_list = json.loads(matrix_json)
     matrix = np.array(matrix_list, dtype=float)
     result_matrix = np.round(m_to_f(matrix), decimals=2)
+    print(f"Result matrix from python {result_matrix}")
     # Convert numpy array back to JSON
     result_list = result_matrix.tolist()
     result_json = {'matrix':result_list}

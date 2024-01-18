@@ -43,7 +43,9 @@ result
             console.log(resultMatrix);
             };
 
-            runPythonCode();
+            if (inputMatrix) {
+                runPythonCode();
+            }
             setIsPythonRunnerDone(true);
         }
     }, [pyodideLoaded, inputMatrix, pythonScript]);

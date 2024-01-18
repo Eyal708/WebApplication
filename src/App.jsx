@@ -1,9 +1,30 @@
 import {useEffect, useState, useCallback } from 'react';
 import React from "react";
+import { ClipLoader } from "react-spinners";
 import usePythonRunner from './pythonRunner';
 
 // const [matrix, setMatrix] = useState(initialMatrix);
-function InputMatrixCell({onCellChange, value}) {
+function InputMatrixCell({onCellChange, value, isDiag = false, onClick, isSelectedCell = false}) {
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
+  if (isDiag)
+  {
+    return (
+      <td style={{ border: '2px solid #000', width: '50px', height: '50px', 
+              textAlign: 'center', lineHeight: '30px'}}
+      id="InMatrixCell"> <span style={{ fontWeight: '900', fontSize: 'small' }}>0</span>
+      </td>
+    );
+
+  }
   return (
     <td style={{ border: '2px solid #000', width: '50px', height: '50px' }}>
           <input
@@ -15,8 +36,11 @@ function InputMatrixCell({onCellChange, value}) {
                max='10'
               className='form-control'
               onChange={onCellChange}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              onClick={onClick}
               style={{ width: '100%', height: '100%', textAlign: 'center', border:"None", 
-                    boxSizing: 'border-box' }}
+                    boxSizing: 'border-box', backgroundColor: isSelectedCell || isHovered ? 'orange' : 'white' }}
 
             />
     </td>
@@ -27,6 +51,8 @@ function InputMatrixCell({onCellChange, value}) {
 function InputMatrix({matrix, setMatrix, matrixSize}) {
   // const [values, setValues] = useState(Array.from({ length: matrixSize }, () => 
   //                             Array.from({ length: matrixSize }, () => 0)));
+  const [selectedCell, setSelectedCell] = useState({'rowIndex': -1, 'colIndex': -1});
+  
   const handleCellChange = (row, col, value)  =>
   {
     const updatedMatrix = matrix.map((rowArray, rowIndex) =>
@@ -36,12 +62,19 @@ function InputMatrix({matrix, setMatrix, matrixSize}) {
       setMatrix(updatedMatrix);
       
     }
+  const onCellClick = (rowIndex, colIndex) =>
+  {
+    setSelectedCell({rowIndex, colIndex});
+
+  }
     const rows = Array.from({ length: matrixSize }, (_, rowIndex) => (
       <tr key={rowIndex} className="board_row">
       {Array.from({ length: matrixSize }, (_, colIndex) => (
         <InputMatrixCell key={colIndex} value={matrix[rowIndex]!== undefined && 
           matrix[rowIndex][colIndex] !== undefined ? matrix[rowIndex][colIndex] : 0} 
-          onCellChange={(e)=>handleCellChange(rowIndex, colIndex, e.target.value)} />
+          onCellChange={(e)=>handleCellChange(rowIndex, colIndex, e.target.value)} isDiag={rowIndex===colIndex}
+          onClick={() => onCellClick(rowIndex, colIndex)} 
+          isSelectedCell={rowIndex === selectedCell.rowIndex && colIndex === selectedCell.colIndex}/>
           ))}
     </tr>
   ));
@@ -67,8 +100,25 @@ function OutputMatrix({submittedMatrix, outputMatrix, setOutputMatrix, matrixSiz
   usePythonRunner(submittedMatrix, setOutputMatrix, setIsPythonRunnerDone, inputMatrixType);
 
   if (!isPythonRunnerDone) {
-    return <div>Loading...</div>; // or return null or some loading spinner
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <ClipLoader color={"#123abc"} loading={true} size={50} />
+        <p style={{ marginTop: '10px' }}>Loading Program...</p>
+      </div>
+    );
   }
+  
+  if(!outputMatrix && submittedMatrix)
+  { //This causes the div to appear when the matrix is submitted but the python runner is not done,
+    //so it won't appear before any matrix is submitted (first render)
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <ClipLoader color={"#123abc"} loading={true} size={50} />
+        <p style={{ marginTop: '10px' }}>Calculating Matrix...</p>
+      </div>
+    );
+  }
+  
   const rows = Array.from({ length: matrixSize }, (_, rowIndex) => (
     <tr key={rowIndex} className="board_row">
       {Array.from({ length: matrixSize }, (_, colIndex) => (
@@ -153,21 +203,14 @@ function InputMatrixForm({onSubmit})
 
 export default function Game() {
   
-  const [submittedMatrix, setSubmittedMatrix] = useState([
-    [0, 0, 0],
-    [0, 0, 0],
-    [0, 0, 0],
-  ]);
-  const [outputMatrix, setoutputMatrix] = useState([
-    [0, 0, 0],
-    [0, 0, 0],
-    [0, 0, 0],
-  ]);
+  const [submittedMatrix, setSubmittedMatrix] = useState('');
+  const [outputMatrix, setoutputMatrix] = useState('');
   const [matrixType, setMatrixType] = useState('Migration');
   
   const onSubmit = (event, matrix) =>
   {
     event.preventDefault();
+    setoutputMatrix('');
     console.log(matrix);
     const newMatrix = matrix.map(row=>[...row]);
     setSubmittedMatrix(newMatrix);
