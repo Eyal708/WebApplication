@@ -2,6 +2,7 @@ import {useEffect, useState, useCallback } from 'react';
 import React from "react";
 import { ClipLoader } from "react-spinners";
 import usePythonRunner from './pythonRunner';
+import Papa from 'papaparse';
 
 // const [matrix, setMatrix] = useState(initialMatrix);
 function InputMatrixCell({onCellChange, value, isDiag = false, onClick, isSelectedCell = false}) {
@@ -94,30 +95,30 @@ function OutputMatrixCell({value}) {
   )
 }
 
-function OutputMatrix({submittedMatrix, outputMatrix, setOutputMatrix, matrixSize, inputMatrixType}) 
+function OutputMatrix({ outputMatrix, matrixSize}) 
 {
-  const [isPythonRunnerDone, setIsPythonRunnerDone] = useState(false); 
-  usePythonRunner(submittedMatrix, setOutputMatrix, setIsPythonRunnerDone, inputMatrixType);
+  // const [isPythonRunnerDone, setIsPythonRunnerDone] = useState(false); 
+  // usePythonRunner(submittedMatrix, setOutputMatrix, setIsPythonRunnerDone, inputMatrixType);
 
-  if (!isPythonRunnerDone) {
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-        <ClipLoader color={"#123abc"} loading={true} size={50} />
-        <p style={{ marginTop: '10px' }}>Loading Program...</p>
-      </div>
-    );
-  }
+  // if (!isPythonRunnerDone) {
+  //   return (
+  //     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+  //       <ClipLoader color={"#123abc"} loading={true} size={50} />
+  //       <p style={{ marginTop: '10px' }}>Loading Program...</p>
+  //     </div>
+  //   );
+  // }
   
-  if(!outputMatrix && submittedMatrix)
-  { //This causes the div to appear when the matrix is submitted but the python runner is not done,
-    //so it won't appear before any matrix is submitted (first render)
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-        <ClipLoader color={"#123abc"} loading={true} size={50} />
-        <p style={{ marginTop: '10px' }}>Calculating Matrix...</p>
-      </div>
-    );
-  }
+  // if(!outputMatrix && submittedMatrix)
+  // { //This causes the div to appear when the matrix is submitted but the python runner is not done,
+  //   //so it won't appear before any matrix is submitted (first render)
+  //   return (
+  //     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+  //       <ClipLoader color={"#123abc"} loading={true} size={50} />
+  //       <p style={{ marginTop: '10px' }}>Calculating Matrix...</p>
+  //     </div>
+  //   );
+  // }
   
   const rows = Array.from({ length: matrixSize }, (_, rowIndex) => (
     <tr key={rowIndex} className="board_row">
@@ -145,20 +146,31 @@ function InputMatrixForm({onSubmit})
   ]);
   const [matrixSize, setMatrixSize] = useState(3);
   const [matrixSizeInput, setMatrixSizeInput] = useState(3);
+  const[shouldClearCells, setShouldClearCells] = useState(false);
+  const [fileName, setFileName] = useState('No file chosen');
+  
 
   const clearCells = useCallback(() => {
-    setInputMatrix(Array.from({ length: matrixSize }, () => Array.from({ length: matrixSize }, () => 0)));
-  }, [matrixSize]);
+    if (shouldClearCells)
+    {
+      setInputMatrix(Array.from({ length: matrixSize }, () => Array.from({ length: matrixSize }, () => 0)));
+    }
+  }, [matrixSize, shouldClearCells]);
   
   useEffect(() => {clearCells()}, [clearCells]);  
   
-  const updateMatrixSize = () =>
+  const handleSizeChange = () =>
   {
     const parsedMatrixSizeInput = Number(matrixSizeInput)
     if (!isNaN (parsedMatrixSizeInput) && Number.isInteger(parsedMatrixSizeInput) && 
        parsedMatrixSizeInput >= 2)
     {
       setMatrixSize(parsedMatrixSizeInput);     
+      
+      if (parsedMatrixSizeInput !== matrixSize)
+      {
+        setShouldClearCells(true);
+      }
       // setMatrixSizeInput('');
 
     }
@@ -170,8 +182,43 @@ function InputMatrixForm({onSubmit})
 
   const onClear = () =>
   {
-    clearCells();
+    setShouldClearCells(true);
   }
+  
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    
+    if (!file) {
+      return;
+    }
+
+    if (file.type !== 'text/csv') {
+      alert('Invalid file type. Please upload a CSV file.');
+      return;
+    }
+
+    setFileName(file.name);
+    const reader = new FileReader();
+  
+    reader.onload = function(e) {
+      const contents = e.target.result;
+      Papa.parse(contents, {
+        complete: function(results) {
+          let matrix = results.data.map(row => row.map(Number));
+          matrix = matrix.filter(row => !(row.length === 1 && row[0] === 0));
+          
+          if (matrix.length !== matrix[0].length) {
+            alert('Matrix must be square');
+            return;
+          }
+          setShouldClearCells(false);
+          setMatrixSize(matrix.length);
+          setInputMatrix(matrix);
+        }
+      });
+    };
+    reader.readAsText(file);
+  };
 
 
   return (
@@ -179,7 +226,8 @@ function InputMatrixForm({onSubmit})
       <div className='matrix'>
         <form onSubmit={(e)=>onSubmit(e, inputMatrix)}>
           <InputMatrix matrix={inputMatrix} setMatrix={setInputMatrix} matrixSize={matrixSize}/>
-          <input type="submit" value="Submit matrix" />
+          <input type="submit" value="Submit Matrix" />
+          <input id="file-upload" type="file" onChange={handleFileUpload} accept='.csv' />     
         </form>
       </div>
       <div className="game-board">    
@@ -187,13 +235,13 @@ function InputMatrixForm({onSubmit})
           <input type="number" step="1" min="2" value={matrixSizeInput} onChange={(e) => 
             setMatrixSizeInput(e.target.value)} />
         </label>
-      <button type="button" onClick={updateMatrixSize}>
+      <button type="button" onClick={handleSizeChange}>
         Change Matrix Size
       </button>
       </div>
       <div className="game-info">
         <button type='button' onClick={onClear}>
-          Clear matrix
+          Clear Matrix
         </button>
       </div>
     </div>
@@ -204,43 +252,81 @@ function InputMatrixForm({onSubmit})
 export default function Game() {
   
   const [submittedMatrix, setSubmittedMatrix] = useState('');
-  const [outputMatrix, setoutputMatrix] = useState('');
-  const [matrixType, setMatrixType] = useState('Migration');
+  const [outputMatrix, setOutputMatrix] = useState('');
+  const [inputMatrixType, setInputMatrixType] = useState('Migration');
+  const [isPythonRunnerDone, setIsPythonRunnerDone] = useState(false); 
+  
+  usePythonRunner(submittedMatrix, setOutputMatrix, setIsPythonRunnerDone, inputMatrixType);
+
+  if (!isPythonRunnerDone) {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', 
+      height: '100vh' }}>
+      <ClipLoader color={"#123abc"} loading={true} size={150} />
+      <p style={{ marginTop: '10px' , fontSize: '20px' }}>Loading Program...</p>
+    </div>
+    );
+  }
+  
   
   const onSubmit = (event, matrix) =>
   {
     event.preventDefault();
-    setoutputMatrix('');
+    setOutputMatrix('');
     console.log(matrix);
     const newMatrix = matrix.map(row=>[...row]);
     setSubmittedMatrix(newMatrix);
     
   }
+  
   const handleDropdownChange = (e) => {
-      setMatrixType(e.target.value);
+      setInputMatrixType(e.target.value);
     }
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
-          <h4>Matrix Type</h4>
-          <select value={matrixType} onChange={handleDropdownChange} style={{ marginLeft: '10px' }}>
-            <option value="Fst">Fst</option>
-            <option value="Migration">Migration</option>
-          </select>
+    
+  const downloadOutputMatrix = () => {
+    const csv = Papa.unparse(outputMatrix);
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.download = 'output_matrix.csv';
+    link.href = url;
+    link.click();
+  }
+    
+  const displayCalculatingMatrix = 
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+      <ClipLoader color={"#123abc"} loading={true} size={50} />
+      <p style={{ marginTop: '10px' }}>Calculating Matrix...</p>
+    </div>;
+  
+  const displayOutputMatrix = 
+  <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <h2>Output Matrix</h2>
+        <div style={{ borderCollapse: 'collapse', margin: '0 auto' }}>
+          <OutputMatrix  outputMatrix={outputMatrix} matrixSize={submittedMatrix.length} /> 
+          {submittedMatrix && <button onClick={downloadOutputMatrix}>Download Output Matrix</button>}
         </div>
-        <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-          <div style={{ borderCollapse: 'collapse', margin: '0 auto' }}>
-            <InputMatrixForm onSubmit={onSubmit}/>
-          </div>
-        </div>
-        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <h2>Output Matrix</h2>
-          <div style={{ borderCollapse: 'collapse', margin: '0 auto' }}>
-            <OutputMatrix submittedMatrix={submittedMatrix} outputMatrix={outputMatrix}
-            setOutputMatrix={setoutputMatrix} matrixSize={submittedMatrix.length} inputMatrixType={matrixType}/> 
-          </div>
+        </div>;
+  
+  
+  const displayOutput = (!outputMatrix && submittedMatrix) ? displayCalculatingMatrix: displayOutputMatrix;
+  
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+        <h4>Matrix Type</h4>
+        <select value={inputMatrixType} onChange={handleDropdownChange} style={{ marginLeft: '10px' }}>
+          <option value="Fst">Fst</option>
+          <option value="Migration">Migration</option>
+        </select>
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+        <div style={{ borderCollapse: 'collapse', margin: '0 auto' }}>
+          <InputMatrixForm onSubmit={onSubmit}/>
         </div>
       </div>
-    );
+      {displayOutput};
+    </div>
+  );
     
 }

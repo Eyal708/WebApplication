@@ -19,7 +19,7 @@ function usePythonRunner(inputMatrix, setOutputMatrix ,setIsPythonRunnerDone, in
     if (!pyodideLoaded) {
         loadPyodideAndPackages();
     }
-}, [pyodideLoaded]);
+});
 
     useEffect(() => {
         if (pyodideLoaded) {
