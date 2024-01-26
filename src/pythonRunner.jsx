@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
-function usePythonRunner(inputMatrix, setOutputMatrix ,setIsPythonRunnerDone, inputMatrixType) {
+function usePythonRunner(inputMatrix, setOutputMatrix ,setIsPythonRunnerDone, inputMatrixType,
+    isIndirectMigration) {
   const [pyodideLoaded, setPyodideLoaded] = useState(false);
   const [resultMatrix, setResultMatrix] = useState('');
   const [pythonScript, setPythonScript] = useState('');
@@ -19,20 +20,21 @@ function usePythonRunner(inputMatrix, setOutputMatrix ,setIsPythonRunnerDone, in
     if (!pyodideLoaded) {
         loadPyodideAndPackages();
     }
-});
+},[]);
 
     useEffect(() => {
         if (pyodideLoaded) {
             //Pyodide packages and python script are loaded
             const runPythonCode = async () => {
             // Define Python code
-
-            const functionToRun = inputMatrixType === "Migration"? "transform_m_to_f" : "transform_f_to_m";
+            const matrixJson = JSON.stringify(inputMatrix);
+            const pythonBool = !isIndirectMigration ? "True" : "False";
+            const functionToRun = inputMatrixType === "Migration"? `transform_m_to_f('${matrixJson}')` : 
+                                    `transform_f_to_m('${matrixJson}', ${pythonBool})`;
             const pythonCode = `
 ${pythonScript}
-matrixJson = '${JSON.stringify(inputMatrix)}'
 print("I'm here")
-result = ${functionToRun}(matrixJson)
+result = ${functionToRun}
 result
                             `;
             // Run Python code in Pyodide
