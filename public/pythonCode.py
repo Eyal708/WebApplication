@@ -19,8 +19,8 @@ def np_array_to_json(matrix) -> str:
     return: matrix as a JSON string
     """
     matrix_list = matrix.tolist()
-    matrix_json = json.dumps(matrix_list)
-    return matrix_json
+    result_json = {'matrix': matrix_list}
+    return json.dumps(result_json)
 
 def transform_m_to_f(matrix_json) -> str:
     """
