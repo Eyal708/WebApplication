@@ -1,4 +1,4 @@
-import {useEffect, useState, useCallback } from 'react';
+import {useState} from 'react';
 import React from "react";
 import { ClipLoader } from "react-spinners";
 import usePythonRunner from './pythonRunner';
@@ -77,11 +77,13 @@ export default function Game() {
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center',
        justifyContent: 'center', width: '500px' }}>
+      
       <h4>Matrix Type</h4>
       <select value={inputMatrixType} onChange={handleDropdownChange} style={{ marginLeft: '10px' }}>
       <option value="Fst">Fst</option>
       <option value="Migration">Migration</option>
       </select>
+      
       {inputMatrixType === 'Fst' && (
       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: '10px' }}> 
       <h4>Inference Method</h4>

@@ -11,6 +11,11 @@ function usePythonRunner(inputMatrix, setOutputMatrix ,setIsPythonRunnerDone, in
       window.pyodide = await window.loadPyodide({ indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.18.1/full/'});
       await window.pyodide.loadPackage('numpy');
       await window.pyodide.loadPackage('scipy');
+      await window.pyodide.loadPackage('micropip');
+      await window.pyodide.runPythonAsync(`
+import micropip
+await micropip.install('population_structure')
+  `);
       const response = await fetch('/pythonCode.py');
       const loadedScript = await response.text();
       setPythonScript(loadedScript);

@@ -1,4 +1,3 @@
-import {useEffect, useState, useCallback } from 'react';
 import React from "react";
 
 function OutputMatrixCell({value, isDiag = false}) {

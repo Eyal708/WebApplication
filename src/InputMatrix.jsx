@@ -125,7 +125,6 @@ function InputMatrixForm({onSubmit})
       {
         setShouldClearCells(true);
       }
-      // setMatrixSizeInput('');
 
     }
     else{
