@@ -1,4 +1,4 @@
-# Web application for running trnsformations between Fst and Migration matrices.
+# Web application for running transformations between Fst and Migration matrices.
 This is an interface implementation for the population_structure package: https://pypi.org/project/population-structure/
 All the code for computing the transormations is ran locally on the user's browser.
 ## Migration -> Fst
