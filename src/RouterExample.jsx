@@ -1,4 +1,3 @@
-//import "./styles.css";
 import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
 
 export default function App() {
@@ -27,7 +26,7 @@ function HomePage() {
 function SecondPage() {
   return (
     <div className="App">
-        <Link  to="/">יhomePage</Link>
+        <Link  to="/">homePage</Link>
       <h1>Hello secondPage</h1>
       <h2>Start editing to see some magic happen!</h2>
     </div>

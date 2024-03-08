@@ -1,8 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  /* background-image: url('./Images/Background.jpg');  set the background image */
+  /* background-size: cover;  scale the image to cover the body */
+  background-position: center;  /* center the image */
+  background-repeat: no-repeat;  /* prevent the background image from repeating */
+  background-attachment: fixed;  /* make the background image fixed */
+  font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -10,4 +15,149 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;  /* align items at the top */
+  height: auto;  /* adjust height based on content */
+  width: 50%;  /* adjust width to take up full width */
+  background-color: rgba(0, 0, 0, 0);  /* semi-transparent black background */
+  padding: 30px;  /* add some padding to create a "window" effect */
+  box-sizing: border-box;  /* include padding in the container's size */
+  border: 3px solid rgba(0, 0, 0, 0);  /* semi-transparent black border */
+  margin: 15vh auto;  /* adjust vertical margin to fit taller container */
+  border-radius: 20px;  /* add rounded corners */
+  flex-wrap: wrap; /* allow the items to wrap onto the next line if there's not enough space */
+}
+
+.rectangle {
+  flex: none;  /* remove flex: 1 */
+  width: 25vw;  /* increase width to make rectangles wider */
+  height: 20vh;  /* decrease height to make rectangles shorter */
+  border: 2px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  background-size: cover;  /* scale the image to cover the rectangle */
+  background-position: center;  /* center the image */
+  border-radius: 20px;
+  justify-content: flex-end;  /* align items at the bottom */
+  position: relative;
+}
+
+
+
+.rectangle img {
+  max-width: 50%;
+  max-height: 50%;
+}
+
+.subscript {
+  font-size: 100%;
+  vertical-align: baseline;
+}
+
+.rectangle h2 {
+  color: rgb(4, 1, 32);  /* make the text black */
+  width: 100%;  /* make the text span the full width of the rectangle */
+  text-align: center;  /* center the text */
+  position: relative;  /* position the text above the pseudo-element */
+  z-index: 1;
+}
+#rectangle1 {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.3)), 
+                                    url('./Images/DNA.jpg');  /* set background image with transparency */
+  margin-right: 10px;  /* add margin to the right */
+}
+
+#rectangle2 {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.3)), 
+                                    url('./Images/Migration.jpg');  /* set different background image with transparency */
+  margin-left: 10px;  /* add margin to the left */
+}
+
+.logo-container {
+  position: absolute;
+  top: 10px;  /* add margin from the top */
+  right: 10px;  /* add margin from the right */
+  display: flex;  /* use flexbox */
+  flex-direction: column;  /* stack the items vertically */
+  align-items: center;  /* center the items horizontally */
+}
+
+.logo {
+  width: 150px;  /* adjust as needed */
+  height: 150px;  /* make the height equal to the width */
+  border-radius: 50%;  /* make the image round */
+  object-fit: contain;  /* scale the image to be contained within the element */
+}
+
+.logo-text {
+  font-family: 'Dancing Script', cursive;  /* use a hand writing font */
+  font-size: 1.2em;  /* adjust as needed */
+  text-align: right;  /* align the text to the right */
+}
+
+
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.footer {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);  /* semi-transparent black background */
+  color: white;
+  text-align: center;
+  padding: 5px 0;  /* reduce padding to make the footer smaller */
+  margin-top: auto;  /* push the footer to the bottom */
+}
+
+.card {
+  width: 20vw;  /* reduce width to make cards narrower */
+  height: 20vh;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.matrix-input input[type='number']::-webkit-inner-spin-button,
+.matrix-input input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.matrix-input input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+.matrix-input input[type='number'] {
+  padding: 0;
+  height: 50px;
+  text-align: center;
+  line-height: 50px;
+}
+
+a {
+  text-decoration: none;
+}
+
+.tableCell[id="myTableCellId"] {
+  border: 2px solid #000;
+  width: 50px;
+  height: 50px;
+  vertical-align: middle;
+  text-align: center;
+  padding: 10px;
+  box-sizing: border-box;
+  font-size: 1.2rem;
+  line-height: 30px;
 }

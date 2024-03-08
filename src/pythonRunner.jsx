@@ -1,35 +1,10 @@
 import { useEffect, useState } from 'react';
-
-function usePythonRunner(inputMatrix, setOutputMatrix ,setIsPythonRunnerDone, inputMatrixType,
-    isIndirectMigration) {
-  const [pyodideLoaded, setPyodideLoaded] = useState(false);
+function usePythonRunner(inputMatrix, setOutputMatrix, inputMatrixType,
+    isIndirectMigration, isPyodideLoaded, pythonScript) {
   const [resultMatrix, setResultMatrix] = useState('');
-  const [pythonScript, setPythonScript] = useState('');
-
   useEffect(() => {
-    const loadPyodideAndPackages = async () => {
-      window.pyodide = await window.loadPyodide({ indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.18.1/full/'});
-      await window.pyodide.loadPackage('numpy');
-      await window.pyodide.loadPackage('scipy');
-      await window.pyodide.loadPackage('micropip');
-      await window.pyodide.runPythonAsync(`
-import micropip
-await micropip.install('population_structure')
-  `);
-      const response = await fetch('/pythonCode.py');
-      const loadedScript = await response.text();
-      setPythonScript(loadedScript);
-      setPyodideLoaded(true);
-    };
-    
-    if (!pyodideLoaded) {
-        loadPyodideAndPackages();
-    }
-},[]);
-
-    useEffect(() => {
-        if (pyodideLoaded) {
-            //Pyodide packages and python script are loaded
+    if (isPyodideLoaded && typeof pythonScript === 'string' && pythonScript.length > 0){
+            //Pyodide packages and python script are loaded, so we can run the python code.
             const runPythonCode = async () => {
             // Define Python code
             const matrixJson = JSON.stringify(inputMatrix);
@@ -53,9 +28,9 @@ result
             if (inputMatrix) {
                 runPythonCode();
             }
-            setIsPythonRunnerDone(true);
+            // setIsPythonRunnerDone(true);
         }
-    }, [pyodideLoaded, inputMatrix, pythonScript]);
+    }, [isPyodideLoaded, inputMatrix, pythonScript]);
     
-}
+ }
 export default usePythonRunner;
