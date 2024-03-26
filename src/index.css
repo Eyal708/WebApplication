@@ -82,23 +82,23 @@ code {
 
 .logo-container {
   position: absolute;
-  top: 10px;  /* add margin from the top */
-  right: 10px;  /* add margin from the right */
+  top: 5px;  /* add margin from the top */
+  right: 5px;  /* add margin from the right */
   display: flex;  /* use flexbox */
   flex-direction: column;  /* stack the items vertically */
   align-items: center;  /* center the items horizontally */
 }
 
 .logo {
-  width: 150px;  /* adjust as needed */
-  height: 150px;  /* make the height equal to the width */
+  width: 170px;  /* adjust as needed */
+  height: 170px;  /* make the height equal to the width */
   border-radius: 50%;  /* make the image round */
   object-fit: contain;  /* scale the image to be contained within the element */
 }
 
 .logo-text {
   font-family: 'Dancing Script', cursive;  /* use a hand writing font */
-  font-size: 1.2em;  /* adjust as needed */
+  font-size: 1.3em;  /* adjust as needed */
   text-align: right;  /* align the text to the right */
 }
 

@@ -2,13 +2,18 @@ import {useState, useEffect, useRef} from 'react';
 import React from "react";
 import { ClipLoader } from "react-spinners";
 import {Button, Grid} from '@material-ui/core';
+import {Card, CardMedia, Typography, CardContent} from '@material-ui/core';
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 import usePythonRunner from './pythonRunner';
+import SideMenu from './SideMenu';
 import Papa from 'papaparse';
 import InputMatrixForm from './InputMatrixForm';
 import OutputMatrix from './OutputMatrix'
 import './index.css';
-
+import {fst, rightArrow, migrationExplanation} from './constants';
+import LogoHeader from './LogoHeader';
+import FstImage from './Images/Migration.jpg';
+import ExplanationCard from './ExplanationCard';
 
 export default function MigrationToFst({isPyodideLoaded, pythonScript}) {
   const [submittedMatrix, setSubmittedMatrix] = useState('');
@@ -80,14 +85,36 @@ export default function MigrationToFst({isPyodideLoaded, pythonScript}) {
   const displayOutput = (!outputMatrix && submittedMatrix) ? displayCalculatingMatrix: displayOutputMatrix;
   
   return (
+    <div>
+      {/* <Card style={{ position: 'absolute', top: 5, left: 5, maxWidth: 300, minWidth: 200, 
+                  maxHeight: 190}}>
+      <CardMedia
+        component="img"
+        alt="My Image"
+        height="140"
+        image={FstImage}
+      /> */}
+    
+      {/* <CardContent sx={{ overflow: 'hidden', textOverflow: 'ellipsis'}}>
+        <Typography gutterBottom variant="h5" component="div" align='center' 
+                style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+          {"Migration" + " " + rightArrow + " " +  fst}
+          </Typography>
+          </CardContent>
+    </Card> */}
+    <ExplanationCard title={"Migration" + " " + rightArrow + " " +  fst} image = {FstImage} 
+              description = {migrationExplanation}/>
+    <SideMenu/>
+    <LogoHeader/>
     <Grid container direction="column" justifyContent="center" alignItems="center" style={{ minHeight: '100vh' }}>
       <Grid item>
         <InputMatrixForm onSubmit={onSubmit} inputMatrixSize={inputMatrixSize} 
                         setInputMatrixSize={setInputMatrixSize}/>
       </Grid>
-        {loadOutputMatrix && <Grid item style={{ position: 'absolute', top: `calc(50% + ${margin}px)`, 
+        {loadOutputMatrix && <Grid item style={{position: "absolute", top: `calc(50% + ${margin}px)`, 
         width: '100%' }}>{displayOutput}
       </Grid>}
     </Grid>
+    </div>
   );
 }
