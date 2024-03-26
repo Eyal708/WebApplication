@@ -12,7 +12,7 @@ of finding a possible coalescence matrix (according to Slatkin's equations) and 
 The direct approach is an implementation of Xiran Liu's and Gili Greenbaum's paper, and it combines Slatkin's and W.H to one set of euqtions and infers a migration
 matrix directly from the fst values.
 Note that due to the random choice of a starting point for the numerical solver used for both methods, a different matrix will be displayed each time
-for the same fst matrix.
+for the same Fst matrix.
 ## A screen shot of the browser based application
 ![Screenshot 2024-02-20 220919](https://github.com/Eyal708/WebApplication/assets/101056608/eb1b5f20-8d30-4d37-9e2d-a71e2cd4fc65)
 
