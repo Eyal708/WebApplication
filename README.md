@@ -1,5 +1,5 @@
 # Web application for running transformations between Fst and Migration matrices.
-This is an interface implementation for the population_structure package: https://pypi.org/project/population-structure/
+This is an interface implementation for the population_structure package: https://pypi.org/project/population-structure/.
 All the code for computing the transormations is ran locally on the user's browser.
 ## Migration -> Fst
 The user is able to enter manually or upload as csv a **consrvative** migration matrix and get its corresponsing migration matrix 
@@ -12,9 +12,14 @@ of finding a possible coalescence matrix (according to Slatkin's equations) and 
 The direct approach is an implementation of Xiran Liu's and Gili Greenbaum's paper, and it combines Slatkin's and W.H to one set of euqtions and infers a migration
 matrix directly from the fst values.
 Note that due to the random choice of a starting point for the numerical solver used for both methods, a different matrix will be displayed each time
-for the same fst matrix.
-## A screen shot of the browser based application
-![Screenshot 2024-02-20 220919](https://github.com/Eyal708/WebApplication/assets/101056608/eb1b5f20-8d30-4d37-9e2d-a71e2cd4fc65)
+for the same Fst matrix.
+## Application's home page
+![image](https://github.com/Eyal708/WebApplication/assets/101056608/80532dd6-30b1-4fd0-9e4d-b85fd9fd1f2a)
+
+## Migration -> Fst page
+![image](https://github.com/Eyal708/WebApplication/assets/101056608/762c3966-a892-4715-a1c6-82ac7778c863)
+
+
 
 
 
