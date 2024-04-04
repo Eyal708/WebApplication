@@ -13,9 +13,7 @@ await micropip.install('population_structure')
       `);
       setPyodideLoaded(true);
       const response = await fetch('/pythonCode.py');
-      console.log("Response:", response);
       const loadedScript = await response.text();
-      console.log("Loaded script:", loadedScript);
       setPythonScript(String(loadedScript));
     };
     loadPyodideAndPackages();

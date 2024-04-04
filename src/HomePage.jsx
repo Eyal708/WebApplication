@@ -12,7 +12,8 @@ export default function HomePage() {
         <div className="container">
           <SideMenu />
           <LogoHeader />
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '20px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 
+                      'flex-start', gap: '20px' }}>
             <HomePageCard
               link="/Migration" 
               image={MigrationImage} 

@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import React from "react";
 import { TextField, TableCell, TableRow } from '@material-ui/core';
 import './index.css';
 
-function InputMatrixCell({ onCellChange, value, isDiag = false, onClick, isSelectedCell = false }) {
+function InputMatrixCell({ onCellChange, value, isDiag = false, onClick, isSelectedCell = false, 
+                           isFst = false}) {
 
   const [isHovered, setIsHovered] = useState(false);
 
@@ -21,20 +22,17 @@ function InputMatrixCell({ onCellChange, value, isDiag = false, onClick, isSelec
       </TableCell>
     );
   }
-  
+  const colorScale = isFst ? `rgba(0, 0, 255, ${value})` : `rgba(0, 255, 0, ${value})`;
   return (
-    <TableCell style={{
-      border: '2px solid #000', width: '50px', height: '50px', verticalAlign: 'middle',
-      boxSizing: 'border-box', padding: 0, marginL: 0, marginR: 0 
-    }}>
+    <TableCell className="tableCell" id="myTableCellId">
       <TextField
         type='number'
         id="MatrixCellInput"
         value={value}
         InputProps={{
           inputProps: { min: 0, max: 10, step: 0.01 },
-          disableUnderline: true, // Add this line to remove the underline
-          style: { textAlign: 'center', padding: 0, fontSize: '1.2rem' } // Adjust the font size
+          disableUnderline: true, 
+          style: { textAlign: 'center', padding: 0, fontSize: '3vmin' } 
         }}
         className='form-control matrix-input'
         onChange={onCellChange}
@@ -42,22 +40,35 @@ function InputMatrixCell({ onCellChange, value, isDiag = false, onClick, isSelec
         onMouseLeave={handleMouseLeave}
         onClick={onClick}
         style={{
-          width: '100%', // Adjust width considering padding
-          height: '100%', // Adjust height considering padding
-          textAlign: 'center',
+          width: '8vmin',
+          height: '8vmin',
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'center', 
           border: 'none',
           padding: '0',
-          boxSizing: 'border-box',
-          backgroundColor: isSelectedCell || isHovered ? 'orange' : 'white',
-          lineHeight: '50px',
+          backgroundColor: isSelectedCell || isHovered ? 'orange' : colorScale,
           margin: 0
         }} />
     </TableCell>
   );
 }
 
-function InputMatrix({ matrix, setMatrix, matrixSize }) {
+function InputMatrix({ matrix, setMatrix, matrixSize, isFst = false }) {
   const [selectedCell, setSelectedCell] = useState({ 'rowIndex': -1, 'colIndex': -1 });
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.target.closest('.inputMatrix')) {
+        setSelectedCell({ 'rowIndex': -1, 'colIndex': -1 });
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [])
 
   const handleCellChange = (row, col, value) => {
     const updatedMatrix = matrix.map((rowArray, rowIndex) => rowIndex === row ? rowArray.map((cell, colIndex) => (colIndex === col ?
@@ -70,7 +81,7 @@ function InputMatrix({ matrix, setMatrix, matrixSize }) {
   };
 
   const rows = Array.from({ length: matrixSize }, (_, rowIndex) => (
-    <TableRow key={rowIndex} className="board_row">
+    <TableRow key={rowIndex} className = "inputMatrix" >
       {Array.from({ length: matrixSize }, (_, colIndex) => (
         <InputMatrixCell key={colIndex} value={matrix[rowIndex] !== undefined &&
           matrix[rowIndex][colIndex] !== undefined ? matrix[rowIndex][colIndex] : 0}

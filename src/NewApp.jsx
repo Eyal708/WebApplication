@@ -15,7 +15,8 @@ export default function NewApp() {
           <Route path="/" element={<HomePage/>} />
           <Route path="/Fst" element={<MigrationToFst isPyodideLoaded={isPyodideLoaded} 
                  pythonScript={pythonScript}/>} />
-          <Route path="/Migration" element={<App isPyodideLoaded={isPyodideLoaded} pythonScript={pythonScript}/>} />      
+          <Route path="/Migration" element={<App isPyodideLoaded={isPyodideLoaded} 
+                 pythonScript={pythonScript}/>} />      
         </Routes>
       </BrowserRouter>
     </div>

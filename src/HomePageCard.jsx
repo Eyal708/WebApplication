@@ -8,16 +8,16 @@ import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(() => ({
   root: {
-    maxWidth: 345,
-    minWidth: 300,
-    margin: "3rem",
+    width: '28vw',
+    height: '40vh',
+    margin: "3vmin",
     transition: 'transform 0.3s ease-in-out', // Add transition
     '&:hover': { // Add hover pseudo-class
       transform: 'scale(1.05)', // Scale up the card
     },
   },
   media: {
-    height: 140,
+    height: '20vh',
   },
 }));
 
@@ -32,10 +32,10 @@ export default function HomePageCard({ link, image, title, description }) {
           image={image}
           alt="green iguana"/>
         <CardContent sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
-          <Typography gutterBottom variant="h4" component="div">
+          <Typography gutterBottom style={{ fontSize: '5vmin' }} component="div">
             {title}
           </Typography>
-          <Typography variant="body1" color="text.secondary">
+          <Typography style={{ fontSize: '2.5vmin' }} color="text.secondary">
             {description}
           </Typography>
         </CardContent>

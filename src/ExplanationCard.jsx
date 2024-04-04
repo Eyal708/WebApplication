@@ -20,7 +20,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function RecipeReviewCard({title, description, image}) {
+export default function ExplanationCard({title, description, image}) {
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
@@ -28,17 +28,27 @@ export default function RecipeReviewCard({title, description, image}) {
   };
 
   return (
-    <Card style={{ position: 'absolute', top: 15, left: 15, maxWidth:350, minWidth:350,
-    maxHeight: 600}}>
+    <Card style={{ 
+      position: 'absolute', 
+      top: '1vh', 
+      left: '1vw',  
+      minWidth: '25vw',
+      maxWidth: '25vw',
+      minHeight: '30vh',
+      maxHeight: '90vh',
+      overflow: 'auto', 
+    }}>
         <CardMedia
         component="img"
-        height="150"
+        height="150vh"
         image={image}
         alt="Explanation"
       />
       <CardContent sx={{ overflow: 'hidden', textOverflow: 'ellipsis'}}>
-        <Typography gutterBottom variant="h5" component="div" align='center' 
-                style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+        <Typography gutterBottom fontSize='4vh'  component="div" align='center' 
+                style={{ height: '100%', display: 'flex', alignItems: 'center', 
+                        justifyContent: 'center'}}
+                inputProps={{ style: { fontSize: '10vmin'}}}>
           {title}
           </Typography>
           </CardContent>
@@ -54,7 +64,7 @@ export default function RecipeReviewCard({title, description, image}) {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography paragraph>
+          <Typography paragraph fontSize='2.2vmin'>
             {description}
           </Typography>
         </CardContent>

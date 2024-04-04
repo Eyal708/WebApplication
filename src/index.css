@@ -82,23 +82,23 @@ code {
 
 .logo-container {
   position: absolute;
-  top: 5px;  /* add margin from the top */
-  right: 5px;  /* add margin from the right */
+  top: 1vmin;  /* add margin from the top */
+  right: 1vmin;  /* add margin from the right */
   display: flex;  /* use flexbox */
   flex-direction: column;  /* stack the items vertically */
   align-items: center;  /* center the items horizontally */
 }
 
 .logo {
-  width: 170px;  /* adjust as needed */
-  height: 170px;  /* make the height equal to the width */
+  width: 20vmin;  /* adjust as needed */
+  height: 20vmin;  /* make the height equal to the width */
   border-radius: 50%;  /* make the image round */
   object-fit: contain;  /* scale the image to be contained within the element */
 }
 
 .logo-text {
   font-family: 'Dancing Script', cursive;  /* use a hand writing font */
-  font-size: 1.3em;  /* adjust as needed */
+  font-size: 3vmin;  /* adjust as needed */
   text-align: right;  /* align the text to the right */
 }
 
@@ -150,14 +150,36 @@ a {
   text-decoration: none;
 }
 
+
 .tableCell[id="myTableCellId"] {
   border: 2px solid #000;
-  width: 50px;
-  height: 50px;
+  width: 8vmin;
+  height: 8vmin;
   vertical-align: middle;
   text-align: center;
-  padding: 10px;
+  padding: 0.2vmin;
   box-sizing: border-box;
-  font-size: 1.2rem;
-  line-height: 30px;
+  font-size: 3vmin;
+  line-height: 1vmin;
+  verticalAlign: 'middle';
+  boxSizing: 'border-box'; 
+  padding: 0; 
+  marginL: 0; 
+  marginR: 0; 
+  /* If the aspect ratio is less than 1 (height is greater than width), use vw units */
+@media (aspect-ratio: 1/1) {
+  .tableCell[id="myTableCellId"] {
+    width: 8vw;
+    height: 8vw;
+  }
+}
+
+/* If the aspect ratio is greater than 1 (width is greater than height), use vh units */
+@media (aspect-ratio: 1/1) {
+  .tableCell[id="myTableCellId"] {
+    width: 8vh;
+    height: 8vh;
+  }
+}
+  
 }

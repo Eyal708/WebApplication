@@ -3,7 +3,6 @@ import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
 export default function App() {
   return (
     <>
-      aaa
       <BrowserRouter basename="/">
         <Routes>
           <Route path="/" element={<HomePage />} />
