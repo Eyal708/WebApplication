@@ -30,7 +30,7 @@ function InputMatrixCell({ onCellChange, value, isDiag = false, onClick, isSelec
         id="MatrixCellInput"
         value={value}
         InputProps={{
-          inputProps: { min: 0, max: 10, step: 0.01 },
+          inputProps: { min: 0, max: isFst ? 0.99 : 10 , step: 0.01 },
           disableUnderline: true, 
           style: { textAlign: 'center', padding: 0, fontSize: '3vmin' } 
         }}

@@ -31,7 +31,7 @@ export default function ExplanationCard({title, description, image}) {
     <Card style={{ 
       position: 'absolute', 
       top: '1vh', 
-      left: '1vw',  
+      left: '1vh',  
       minWidth: '25vw',
       maxWidth: '25vw',
       minHeight: '30vh',
@@ -44,11 +44,12 @@ export default function ExplanationCard({title, description, image}) {
         image={image}
         alt="Explanation"
       />
-      <CardContent sx={{ overflow: 'hidden', textOverflow: 'ellipsis'}}>
+      <CardContent sx={{ overflow: 'hidden', textOverflow: 'ellipsis'}}
+        >
         <Typography gutterBottom fontSize='4vh'  component="div" align='center' 
                 style={{ height: '100%', display: 'flex', alignItems: 'center', 
                         justifyContent: 'center'}}
-                inputProps={{ style: { fontSize: '10vmin'}}}>
+                inputProps={{ style: { fontSize: '10vw'}}}>
           {title}
           </Typography>
           </CardContent>

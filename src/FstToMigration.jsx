@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Grid} from '@material-ui/core';
+import {Typography} from '@material-ui/core';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -17,7 +17,7 @@ export default function MigrationToFst({isPyodideLoaded, pythonScript}) {
     };
   const cardTitle = fst + " " + rightArrow + " " +  "Migration";
   const radioButton = <FormControl>
-      <FormLabel id="inference-method">Inference Method</FormLabel>
+      <FormLabel id="inference-method" style={{fontSize:"2vmin"}}>Inference Method</FormLabel>
       <RadioGroup
         row
         aria-labelledby="inference-method"
@@ -26,19 +26,18 @@ export default function MigrationToFst({isPyodideLoaded, pythonScript}) {
         value = {inferenceMethod}
         onChange={handleMethodChange}
       >
-        <FormControlLabel value="Direct" control={<Radio />} label="Direct"/>
-        <FormControlLabel value="Indirect" control={<Radio />} label="Indirect" />
+        <FormControlLabel value="Direct" control={<Radio sx={{
+          '& .MuiSvgIcon-root': {fontSize: "3vmin",},}}/>} style = {{fontSize :"2vmi"}} 
+          label={<Typography style={{fontSize: "2vmin"}}>Direct</Typography>}/>
+        <FormControlLabel value="Indirect" control={<Radio sx={{
+          '& .MuiSvgIcon-root': {fontSize: "3vmin",},}}/>}
+          label={<Typography style={{fontSize: "2vmin"}}>Indirect</Typography>}/>
       </RadioGroup>
     </FormControl>
 return (
-  <Grid container direction = "column" 
-  style={{ minHeight: '50vh', width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flrx-end'}}>
-      <Grid item> {radioButton} </Grid>
-      <Grid item> 
-        <TransformationPage isPyodideLoaded={isPyodideLoaded} pythonScript={pythonScript} 
+         <TransformationPage isPyodideLoaded={isPyodideLoaded} pythonScript={pythonScript} 
         inputMatrixType="Fst" cardTitle = {cardTitle} cardImage = {MigrationImage}
         cardDescription={migrationExplanation} isIndirectMigration={inferenceMethod==="Indirect"}
         showInferenceMethod = {true} radioButton = {radioButton} /> 
-      </Grid>
-  </Grid>);
+  );
 }
