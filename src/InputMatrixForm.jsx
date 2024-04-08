@@ -11,7 +11,7 @@ import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import { Typography } from '@material-ui/core';
 import { buttonStyle, manualInputInfo } from './constants';
 
-function InputMatrixForm({onSubmit, inputMatrixSize, setInputMatrixSize})
+function InputMatrixForm({onSubmit, inputMatrixSize, setInputMatrixSize, isFst})
 {
   const [inputMatrix, setInputMatrix] = useState([
     [0, 0, 0],
@@ -110,9 +110,9 @@ function InputMatrixForm({onSubmit, inputMatrixSize, setInputMatrixSize})
       <form onSubmit={(e)=> onSubmit(e, inputMatrix)}> 
         <Grid container direction='column' alignItems='center'spacing={1}>
           <Grid item> 
-           {inputMatrixSize <=10 ? <InputMatrix matrix={inputMatrix} setMatrix={setInputMatrix} 
-            matrixSize={inputMatrixSize}/>: <Typography style = {{fontSize:"3vmin"}}> Uploaded file {fileName}
-                                            </Typography>}
+           {inputMatrixSize <=10 ? <InputMatrix matrix={inputMatrix} setMatrix={setInputMatrix}  
+            matrixSize={inputMatrixSize} isFst = {isFst}/>: 
+            <Typography style = {{fontSize:"3vmin"}}> Uploaded file {fileName} </Typography>}
           </Grid>
           <Grid item style = {{marginTop:"0.5vmin"}}>  
             <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group" 

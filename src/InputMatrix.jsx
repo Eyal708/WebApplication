@@ -85,9 +85,10 @@ function InputMatrix({ matrix, setMatrix, matrixSize, isFst = false }) {
       {Array.from({ length: matrixSize }, (_, colIndex) => (
         <InputMatrixCell key={colIndex} value={matrix[rowIndex] !== undefined &&
           matrix[rowIndex][colIndex] !== undefined ? matrix[rowIndex][colIndex] : 0}
-          onCellChange={(e) => handleCellChange(rowIndex, colIndex, e.target.value)} isDiag={rowIndex === colIndex}
-          onClick={() => onCellClick(rowIndex, colIndex)}
-          isSelectedCell={rowIndex === selectedCell.rowIndex && colIndex === selectedCell.colIndex} />
+          onCellChange={(e) => handleCellChange(rowIndex, colIndex, e.target.value)} 
+          isDiag={rowIndex === colIndex} onClick={() => onCellClick(rowIndex, colIndex)}
+          isSelectedCell={rowIndex === selectedCell.rowIndex && colIndex === selectedCell.colIndex}
+          isFst = {isFst}/>
       ))}
     </TableRow>
   ));

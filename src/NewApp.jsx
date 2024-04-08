@@ -3,6 +3,7 @@ import HomePage from "./HomePage"
 import App from "./App"
 import  usePyodideLoader from './pyodideLoader';
 import MigrationToFst from "./MigrationToFst";
+import FstToMigration from "./FstToMigration"
 import { useState } from "react";
 export default function NewApp() {
     const [isPyodideLoaded, setIsPyodideLoaded] = useState(false);
@@ -15,7 +16,7 @@ export default function NewApp() {
           <Route path="/" element={<HomePage/>} />
           <Route path="/Fst" element={<MigrationToFst isPyodideLoaded={isPyodideLoaded} 
                  pythonScript={pythonScript}/>} />
-          <Route path="/Migration" element={<App isPyodideLoaded={isPyodideLoaded} 
+          <Route path="/Migration" element={<FstToMigration isPyodideLoaded={isPyodideLoaded} 
                  pythonScript={pythonScript}/>} />      
         </Routes>
       </BrowserRouter>

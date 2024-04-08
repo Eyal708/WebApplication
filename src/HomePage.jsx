@@ -28,7 +28,6 @@ export default function HomePage() {
             />
           </div>
         </div>
-        <footer className="footer">Designed by Freepik</footer>
       </div>
     );
 }
