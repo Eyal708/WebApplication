@@ -10,7 +10,7 @@ import {fst, rightArrow, migrationExplanation} from './constants';
 import MigrationImage from './Images/DNA.jpg';
 import TransformationPage from './TransformationPage';
 
-export default function MigrationToFst({isPyodideLoaded, pythonScript}) {
+export default function FstToMigration({isPyodideLoaded, pythonScript}) {
   const [inferenceMethod, setInferenceMethod] = useState('Direct');
   const handleMethodChange = (event) => {
       setInferenceMethod(event.target.value);

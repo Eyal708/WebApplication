@@ -6,6 +6,7 @@ import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 import usePythonRunner from './pythonRunner';
 import SideMenu from './SideMenu';
 import Papa from 'papaparse';
+import JSZip from 'jszip';
 import InputMatrixForm from './InputMatrixForm';
 import OutputMatrix from './OutputMatrix'
 import './index.css';
@@ -19,8 +20,13 @@ export default function TransformationPage({isPyodideLoaded, pythonScript, input
                                             showInferenceMethod = false, radioButton}){
   const [submittedMatrix, setSubmittedMatrix] = useState('');
   const [outputMatrix, setOutputMatrix] = useState('');
+  const [resultMatrices, setResultMatrices] = useState([]);
   const [margin, setMargin] = useState('8vh');
   const[inputMatrixSize, setInputMatrixSize] = useState(3);
+  const [multipleRuns, setMultipleRuns] = useState(false);
+  const [numRuns, setNumRuns] = useState(2);
+  const [submittedNumRuns, setSubmittedNumRuns] = useState(2);
+  const [submittedMultipleRuns, setSubmittedMultipleRuns] = useState(false);
   const outputRef = useRef(null); // Create a ref for the output matrix
   const inputRef = useRef(null) ; 
 
@@ -44,13 +50,16 @@ export default function TransformationPage({isPyodideLoaded, pythonScript, input
 
   
   usePythonRunner(submittedMatrix, setOutputMatrix, inputMatrixType, isIndirectMigration, 
-                isPyodideLoaded, pythonScript);
+                isPyodideLoaded, pythonScript, setResultMatrices, submittedMultipleRuns, submittedNumRuns);
 
   
   const onSubmit = (event, matrix) =>
   {
     event.preventDefault();
     setOutputMatrix('');
+    setResultMatrices([]);
+    setSubmittedMultipleRuns(multipleRuns);
+    setSubmittedNumRuns(numRuns);
     console.log(matrix);
     const newMatrix = matrix.map(row=>[...row]);
     setSubmittedMatrix(newMatrix);
@@ -66,6 +75,23 @@ export default function TransformationPage({isPyodideLoaded, pythonScript, input
     link.href = url;
     link.click();
   }
+
+  const downloadOutputMatrices = () => {
+    const zip = new JSZip();
+    // Add each output matrix to the zip file
+    resultMatrices.forEach((matrix, index) => {
+      const csv = Papa.unparse(matrix);
+      zip.file(`output_matrix_${index + 1}.csv`, csv);
+    });
+    // Generate the zip file and trigger the download
+    zip.generateAsync({ type: 'blob' }).then(blob => {
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.download = 'output_matrices.zip';
+      link.href = url;
+      link.click();
+    });
+  };
     
   const displayCalculatingMatrix = 
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
@@ -76,6 +102,7 @@ export default function TransformationPage({isPyodideLoaded, pythonScript, input
     button: buttonStyle,
   });
   const classes = useStyles();
+  
   const displayOutputMatrix = 
   <Grid container direction='column' spacing={1}
         style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', 
@@ -87,13 +114,26 @@ export default function TransformationPage({isPyodideLoaded, pythonScript, input
         <Grid item>
             {submittedMatrix && <Button type='button' className = {classes.button} 
                                 onClick={downloadOutputMatrix} variant='contained' 
-                                startIcon={<CloudDownloadIcon/>} color="primary" component="label">
-            Download CSV
+                                startIcon={<CloudDownloadIcon style = {{fontSize:"3vmin"}}/>} 
+                                          color="primary" component="label">
+            Download CSV 
             </Button>}
        </Grid>
   </Grid>;
+
+  const displayDownloadZip = 
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                  marginTop:'2vh'}}>
+        <Button type='button' className={classes.button} 
+                onClick={downloadOutputMatrices} variant='contained' 
+                startIcon={<CloudDownloadIcon style = {{fontSize:"3vmin"}}/>} color="primary" 
+                component="label">
+                Download Zip ({submittedNumRuns} files)
+        </Button>
+    </div>;
   
-  const displayOutput = (!outputMatrix && submittedMatrix) ? displayCalculatingMatrix: displayOutputMatrix;
+  const displayOutput = submittedMultipleRuns && submittedMatrix && resultMatrices.length == submittedNumRuns? 
+  displayDownloadZip : (!outputMatrix && submittedMatrix) ? displayCalculatingMatrix: displayOutputMatrix;
   
   return (
     <div>
@@ -105,7 +145,9 @@ export default function TransformationPage({isPyodideLoaded, pythonScript, input
       {showInferenceMethod && <Grid item>{radioButton}</Grid>}
       <Grid item ref={inputRef} style = {{marginBottom:"1vmin"}}>
         <InputMatrixForm onSubmit={onSubmit} inputMatrixSize={inputMatrixSize} 
-        setInputMatrixSize={setInputMatrixSize} isFst={inputMatrixType === "Fst"}/>
+        setInputMatrixSize={setInputMatrixSize} isFst={inputMatrixType === "Fst"} 
+        multipleRuns={multipleRuns} setMultipleRuns={setMultipleRuns} numRuns={numRuns}
+        setNumRuns={setNumRuns}/>
       </Grid>
         <Grid item style={{ position:'absolute', top: margin, 
         width: '100%' }}>{displayOutput}
