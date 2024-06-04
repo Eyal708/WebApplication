@@ -1,6 +1,5 @@
-import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
+import { BrowserRouter, Route, Routes} from "react-router-dom";
 import HomePage from "./HomePage"
-import App from "./App"
 import  usePyodideLoader from './pyodideLoader';
 import MigrationToFst from "./MigrationToFst";
 import FstToMigration from "./FstToMigration"

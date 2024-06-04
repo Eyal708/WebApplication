@@ -78,6 +78,17 @@ function InputMatrixForm({onSubmit, inputMatrixSize, setInputMatrixSize, isFst, 
   const onClear = () =>
   {
     setShouldClearCells(true);
+    if (inputMatrixSize > 10)
+    // If matrix size is bigger than 10, set the matrix back to a 3x3 matrix of zeroes.
+    {
+      setInputMatrix([
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0],
+      ]);
+      setInputMatrixSize(3);
+    }
+
   }
   
   const handleFileUpload = (event) => {
@@ -203,7 +214,7 @@ function InputMatrixForm({onSubmit, inputMatrixSize, setInputMatrixSize, isFst, 
             <Grid item style={{ marginLeft: '0vw' }}>
               <Button className={classes.button} type="button" onClick={handleSizeChange} variant="contained"
                       startIcon = {<ChangeIcon style={{ fontSize: '3vmin' }}/>}  color="primary">
-                Change Size
+                Matrix Size
               </Button>
             </Grid>
             <Grid item style={{ marginLeft: '2vmin' }}>

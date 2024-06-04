@@ -1,10 +1,14 @@
 import React from "react";
+import { useState, useEffect } from 'react';
 import './index.css';
 import {TableCell, TableRow } from '@material-ui/core';
 import {heatMapSize} from './constants';
 
-function OutputMatrixCell({value, cellSize = 2, isDiag = false, isFst = true, displayValue = true,}) {
-    const colorScale = isFst ? `rgba(0, 0, 255, ${value})` : `rgba(0, 255, 0, ${value})`;
+function OutputMatrixCell({value, cellSize = 2, isDiag = false, isFst = true, displayValue = true, 
+                          minValue, maxValue}) {
+    //This is used to scale the color of the cell based on the max value (When the output matrix is migration).
+    let normalizedValue = maxValue === minValue ? 1 : (value - minValue) / (maxValue - minValue);
+    const colorScale = isFst ? `rgba(0, 0, 255, ${value})` : `rgba(0, 255, 0, ${normalizedValue})`;
     const backgroundColor = isDiag ? "lightgray": colorScale;
     return (
       displayValue ? <TableCell className="tableCell" id="myTableCellId" 
@@ -17,9 +21,23 @@ function OutputMatrixCell({value, cellSize = 2, isDiag = false, isFst = true, di
     );
   }
 
-  function OutputMatrix({ outputMatrix, matrixSize, isFst = false}) 
+  function OutputMatrix({outputMatrix, matrixSize, isFst = false}) 
   {
     const cellSize = heatMapSize / matrixSize;
+    const [minValue, setMinValue] = useState(Infinity);
+    const [maxValue, setMaxValue] = useState(-Infinity);
+    // This use effect is used to update the min and max values in the output matrix at any given time.
+    useEffect(() => {
+      //if outputMatrix is not an array, return
+      if (!Array.isArray(outputMatrix) || !outputMatrix.length) {
+        return;
+      }
+      const min = outputMatrix.reduce((min, row) => Math.min(min, ...row), Infinity);
+      const max = outputMatrix.reduce((max, row) => Math.max(max, ...row), -Infinity);
+      setMinValue(min);
+      setMaxValue(max);
+    }, [outputMatrix]);
+
     const rows = Array.from({ length: matrixSize }, (_, rowIndex) => (
       <TableRow key={rowIndex} className="board_row">
         {Array.from({ length: matrixSize }, (_, colIndex) => (
@@ -27,8 +45,7 @@ function OutputMatrixCell({value, cellSize = 2, isDiag = false, isFst = true, di
                             outputMatrix[rowIndex][colIndex] !== undefined ? 
                             outputMatrix[rowIndex][colIndex] : 0}
             isDiag={rowIndex===colIndex} isFst = {isFst} displayValue = {matrixSize <= 10}
-            // shouldDisplay={isFst? rowIndex <= colIndex: true}
-            />
+            minValue={minValue} maxValue={maxValue}/>
         ))}
       </TableRow>
     ));

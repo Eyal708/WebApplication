@@ -4,7 +4,7 @@ import { TextField, TableCell, TableRow } from '@material-ui/core';
 import './index.css';
 
 function InputMatrixCell({ onCellChange, value, isDiag = false, onClick, isSelectedCell = false, 
-                           isFst = false}) {
+                           isFst = false, maxValue, minValue}) {
 
   const [isHovered, setIsHovered] = useState(false);
 
@@ -22,7 +22,9 @@ function InputMatrixCell({ onCellChange, value, isDiag = false, onClick, isSelec
       </TableCell>
     );
   }
-  const colorScale = isFst ? `rgba(0, 0, 255, ${value})` : `rgba(0, 255, 0, ${value})`;
+  // This is used to scale the color of the cell based on the max value (When the input matrix is migration).
+  let normalizedValue = maxValue === minValue ? 1 : (value - minValue) / (maxValue - minValue);
+  const colorScale = isFst ? `rgba(0, 0, 255, ${value})` : `rgba(0, 255, 0, ${normalizedValue})`;
   return (
     <TableCell className="tableCell" id="myTableCellId">
       <TextField
@@ -56,7 +58,16 @@ function InputMatrixCell({ onCellChange, value, isDiag = false, onClick, isSelec
 
 function InputMatrix({ matrix, setMatrix, matrixSize, isFst = false }) {
   const [selectedCell, setSelectedCell] = useState({ 'rowIndex': -1, 'colIndex': -1 });
-
+  const [minValue, setMinValue] = useState(Infinity);
+  const [maxValue, setMaxValue] = useState(-Infinity);
+  // This use effect is used to update the min and max values in the input matrix at any given time.
+  useEffect(() => {
+    const min = matrix.reduce((min, row) => Math.min(min, ...row), Infinity);
+    const max = matrix.reduce((max, row) => Math.max(max, ...row), -Infinity);
+    setMinValue(min);
+    setMaxValue(max);
+  }, [matrix]);
+  // This useEffect is used to close the cell selection when clicking outside the matrix.
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (!event.target.closest('.inputMatrix')) {
@@ -74,6 +85,11 @@ function InputMatrix({ matrix, setMatrix, matrixSize, isFst = false }) {
     const updatedMatrix = matrix.map((rowArray, rowIndex) => rowIndex === row ? rowArray.map((cell, colIndex) => (colIndex === col ?
       (!Number.isNaN(parseFloat(value)) ? parseFloat(value) : 0) : cell)) : rowArray
     );
+    
+    if (isFst) {
+      // set the corresponding cell in the symmetric matrix
+      updatedMatrix[col][row] = (!Number.isNaN(parseFloat(value)) ? parseFloat(value) : 0);
+    }
     setMatrix(updatedMatrix);
   };
   const onCellClick = (rowIndex, colIndex) => {
@@ -88,7 +104,7 @@ function InputMatrix({ matrix, setMatrix, matrixSize, isFst = false }) {
           onCellChange={(e) => handleCellChange(rowIndex, colIndex, e.target.value)} 
           isDiag={rowIndex === colIndex} onClick={() => onCellClick(rowIndex, colIndex)}
           isSelectedCell={rowIndex === selectedCell.rowIndex && colIndex === selectedCell.colIndex}
-          isFst = {isFst}/>
+          isFst = {isFst} maxValue={maxValue} minValue={minValue}/>
       ))}
     </TableRow>
   ));
