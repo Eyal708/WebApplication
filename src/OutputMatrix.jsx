@@ -2,13 +2,14 @@ import React from "react";
 import { useState, useEffect } from 'react';
 import './index.css';
 import {TableCell, TableRow } from '@material-ui/core';
-import {heatMapSize} from './constants';
+import {heatMapSize, FST_COLOR_BASE, MIGRATION_COLOR_BASE} from './constants';
 
 function OutputMatrixCell({value, cellSize = 2, isDiag = false, isFst = true, displayValue = true, 
                           minValue, maxValue}) {
     //This is used to scale the color of the cell based on the max value (When the output matrix is migration).
     let normalizedValue = maxValue === minValue ? 1 : (value - minValue) / (maxValue - minValue);
-    const colorScale = isFst ? `rgba(0, 0, 255, ${value})` : `rgba(0, 255, 0, ${normalizedValue})`;
+    const colorScale = isFst ? `rgba(${FST_COLOR_BASE}, ${value})` : `rgba(${MIGRATION_COLOR_BASE}, 
+                                                                            ${normalizedValue})`;
     const backgroundColor = isDiag ? "lightgray": colorScale;
     return (
       displayValue ? <TableCell className="tableCell" id="myTableCellId" 
