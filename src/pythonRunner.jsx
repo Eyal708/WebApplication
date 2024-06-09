@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 function usePythonRunner(inputMatrix, setOutputMatrix, inputMatrixType,
-    isIndirectMigration, isPyodideLoaded, pythonScript, setResultMatrices, multipleRuns, numRuns) {
+    isIndirectMigration, isPyodideLoaded, pythonScript, pyodide, setResultMatrices, multipleRuns, numRuns) {
   const [resultMatrix, setResultMatrix] = useState('');
   useEffect(() => {
     if (isPyodideLoaded && typeof pythonScript === 'string' && pythonScript.length > 0){
@@ -20,13 +20,13 @@ result
                 if (multipleRuns) {
                     const resultMatrices = [];
                     for (let i = 0; i < numRuns; i++) {
-                        const result = JSON.parse(await window.pyodide.runPythonAsync(pythonCode.trim()));
+                        const result = JSON.parse(await pyodide.runPythonAsync(pythonCode.trim()));
                         resultMatrices.push(result.matrix);
                     }
                     setResultMatrices(resultMatrices);
                 }
                 else {
-                    const result = JSON.parse(await window.pyodide.runPythonAsync(pythonCode.trim()));
+                    const result = JSON.parse(await pyodide.runPythonAsync(pythonCode.trim()));
                     setResultMatrix(result.matrix);
                     setOutputMatrix(result.matrix);
                     console.log("This is the result matrix:")

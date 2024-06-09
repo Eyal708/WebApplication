@@ -48,14 +48,13 @@ def transform_f_to_m(matrix_json, direct=True):
     """
     # Convert JSON to numpy array
     matrix = json_to_np_array(matrix_json)
-    print("Using my package!")
     if direct:
         #run Xiran's method
-        result_matrix = np.round(psu.f_to_m(matrix, indirect=False)[0], decimals=2)
+        print("direct appraoch")
+        result_matrix = np.round(psu.f_to_m(matrix, indirect=False, bounds_m = (0, np.inf))[0], 2)
     else:
         #run Eyal's metohd
-        result_matrix = np.round(psu.f_to_m(matrix, constraint=True)[0], decimals=2)
-    # Convert numpy array back to JSON
+        result_matrix = np.round(psu.f_to_m(matrix, constraint=True)[0], 2)
     result_json = np_array_to_json(result_matrix)
     return result_json
 

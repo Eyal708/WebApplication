@@ -15,7 +15,7 @@ import LogoHeader from './LogoHeader';
 import ExplanationCard from './ExplanationCard';
 import { makeStyles } from '@material-ui/core/styles';
 
-export default function TransformationPage({isPyodideLoaded, pythonScript, inputMatrixType, 
+export default function TransformationPage({isPyodideLoaded, pythonScript, pyodide, inputMatrixType, 
                                             isIndirectMigration, cardTitle, cardDescription, cardImage,
                                             showInferenceMethod = false, radioButton}){
   const [submittedMatrix, setSubmittedMatrix] = useState('');
@@ -49,8 +49,8 @@ export default function TransformationPage({isPyodideLoaded, pythonScript, input
   }, [inputMatrixSize, outputMatrix]);
 
   
-  usePythonRunner(submittedMatrix, setOutputMatrix, inputMatrixType, isIndirectMigration, 
-                isPyodideLoaded, pythonScript, setResultMatrices, submittedMultipleRuns, submittedNumRuns);
+  usePythonRunner(submittedMatrix, setOutputMatrix, inputMatrixType, isIndirectMigration, isPyodideLoaded, 
+                  pythonScript, pyodide, setResultMatrices, submittedMultipleRuns, submittedNumRuns);
 
   
   const onSubmit = (event, matrix) =>

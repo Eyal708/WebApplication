@@ -10,7 +10,7 @@ import {fst, rightArrow, migrationExplanation} from './constants';
 import MigrationImage from './Images/DNA.jpg';
 import TransformationPage from './TransformationPage';
 
-export default function FstToMigration({isPyodideLoaded, pythonScript}) {
+export default function FstToMigration({isPyodideLoaded, pythonScript, pyodide}) {
   const [inferenceMethod, setInferenceMethod] = useState('Direct');
   const handleMethodChange = (event) => {
       setInferenceMethod(event.target.value);
@@ -35,7 +35,7 @@ export default function FstToMigration({isPyodideLoaded, pythonScript}) {
       </RadioGroup>
     </FormControl>
 return (
-         <TransformationPage isPyodideLoaded={isPyodideLoaded} pythonScript={pythonScript} 
+        <TransformationPage isPyodideLoaded={isPyodideLoaded} pythonScript={pythonScript} pyodide={pyodide} 
         inputMatrixType="Fst" cardTitle = {cardTitle} cardImage = {MigrationImage}
         cardDescription={migrationExplanation} isIndirectMigration={inferenceMethod==="Indirect"}
         showInferenceMethod = {true} radioButton = {radioButton} /> 

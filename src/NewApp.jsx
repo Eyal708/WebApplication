@@ -7,16 +7,16 @@ import { useState } from "react";
 export default function NewApp() {
     const [isPyodideLoaded, setIsPyodideLoaded] = useState(false);
     const [pythonScript, setPythonScript] = useState('');
-    usePyodideLoader(setPythonScript, setIsPyodideLoaded);
+    const pyodide = usePyodideLoader(setPythonScript, setIsPyodideLoaded);
     return (
       <div>
       <BrowserRouter basename="/">
         <Routes>
           <Route path="/" element={<HomePage/>} />
           <Route path="/Fst" element={<MigrationToFst isPyodideLoaded={isPyodideLoaded} 
-                 pythonScript={pythonScript}/>} />
+                 pythonScript={pythonScript} pyodide={pyodide}/>} />
           <Route path="/Migration" element={<FstToMigration isPyodideLoaded={isPyodideLoaded} 
-                 pythonScript={pythonScript}/>} />      
+                 pythonScript={pythonScript} pyodide={pyodide}/>} />      
         </Routes>
       </BrowserRouter>
     </div>
