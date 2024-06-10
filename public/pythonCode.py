@@ -54,7 +54,7 @@ def transform_f_to_m(matrix_json, direct=True):
         result_matrix = np.round(psu.f_to_m(matrix, indirect=False, bounds_m = (0, np.inf))[0], 2)
     else:
         #run Eyal's metohd
-        result_matrix = np.round(psu.f_to_m(matrix, constraint=True)[0], 2)
+        result_matrix = np.round(psu.f_to_m(matrix, constraint=True, bounds_m = (0, np.inf))[0], 2)
     result_json = np_array_to_json(result_matrix)
     return result_json
 

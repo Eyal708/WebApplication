@@ -13,5 +13,5 @@ export const buttonStyle = {
 export const manualInputInfo = "You can manually enter a matrix of size 2-10. For larger matrices, please upload a csv file."
 export const heatMapSize = 44;
 export const FST_COLOR_BASE = '6, 107, 170';
-export const MIGRATION_COLOR_BASE = '80, 190, 0';
+export const MIGRATION_COLOR_BASE = '100, 180, 80';
 export const MIGRATION_MATRIX = 'migrationMatrix';
