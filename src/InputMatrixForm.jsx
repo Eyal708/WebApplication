@@ -142,14 +142,14 @@ function InputMatrixForm({onSubmit, inputMatrixSize, setInputMatrixSize, isFst, 
                 <Typography style = {{fontSize:"3vmin"}}> Uploaded file {fileName} </Typography>}
             </Grid>
             <Grid item style = {{marginTop:"0.5vmin"}}>  
-              <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group" 
+              <ButtonGroup variant="contained" color="success" aria-label="contained primary button group" 
                 size="small">
                 <Button Button className={classes.button} type="submit" startIcon={<PlayIcon 
                         style={{ fontSize: '3vmin' }} />}>Run</Button>
                 <Button Button className={classes.button} type='button' startIcon = {<ClearIcon
                         style={{ fontSize: '3vmin' }}/>} 
                   onClick={onClear}>Clear</Button>
-                <Button Button className={classes.button} variant="contained" color="primary" 
+                <Button Button className={classes.button} 
                         component="label" startIcon={<CloudUploadIcon 
                         style={{ fontSize: '3vmin' }}/>}>
                   Upload CSV 

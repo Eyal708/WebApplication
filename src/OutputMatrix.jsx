@@ -3,28 +3,46 @@ import { useState, useEffect } from 'react';
 import './index.css';
 import {TableCell, TableRow } from '@material-ui/core';
 import {heatMapSize, FST_COLOR_BASE, MIGRATION_COLOR_BASE} from './constants';
+import Tooltip from '@material-ui/core/Tooltip';
+import { makeStyles } from '@material-ui/core/styles';
 
 function OutputMatrixCell({value, cellSize = 2, isDiag = false, isFst = true, displayValue = true, 
-                          minValue, maxValue}) {
+                          minValue, maxValue, hoverStats = null}) {
     //This is used to scale the color of the cell based on the max value (When the output matrix is migration).
     let normalizedValue = maxValue === minValue ? 1 : (value - minValue) / (maxValue - minValue);
     const colorScale = isFst ? `rgba(${FST_COLOR_BASE}, ${value})` : `rgba(${MIGRATION_COLOR_BASE}, 
                                                                             ${normalizedValue})`;
     const backgroundColor = isDiag ? "lightgray": colorScale;
-    return (
+    const cell = 
       displayValue ? <TableCell className="tableCell" id="myTableCellId" 
                       style={{backgroundColor:backgroundColor}}> {value} </TableCell>:
                           <TableCell className="tableCell" id="myTableCellId" 
                                      style = {{backgroundColor:backgroundColor, 
                                       width: `${cellSize}vmin` ,height:`${cellSize}vmin`}}>
 
-        </TableCell>   
-    );
+        </TableCell>;
+
+    const useStyles = makeStyles((theme) => ({
+      tooltip: {
+        fontSize: "2vmin", // adjust this value to make the tooltip text bigger
+      },
+    }));
+    const classes = useStyles()
+
+       return (
+        hoverStats != null && !isDiag ? 
+          <Tooltip title={`std: ${hoverStats}`} classes={{ tooltip: classes.tooltip }}>
+             {cell}
+          </Tooltip> :
+          cell
+      );
   }
 
-  function OutputMatrix({outputMatrix, matrixSize, isFst = false}) 
+  function OutputMatrix({outputMatrix, matrixSize, isFst = false, extraStats = []}) 
   {
-    const cellSize = heatMapSize / matrixSize;
+    console.log(extraStats);
+    let cellSize = heatMapSize / matrixSize;
+    // if extrasStats in not null, double the cell size
     const [minValue, setMinValue] = useState(Infinity);
     const [maxValue, setMaxValue] = useState(-Infinity);
     // This use effect is used to update the min and max values in the output matrix at any given time.
@@ -46,7 +64,8 @@ function OutputMatrixCell({value, cellSize = 2, isDiag = false, isFst = true, di
                             outputMatrix[rowIndex][colIndex] !== undefined ? 
                             outputMatrix[rowIndex][colIndex] : 0}
             isDiag={rowIndex===colIndex} isFst = {isFst} displayValue = {matrixSize <= 10}
-            minValue={minValue} maxValue={maxValue}/>
+            minValue={minValue} maxValue={maxValue} hoverStats = {extraStats.length > 0 ?
+            extraStats[rowIndex][colIndex] : null}/>
         ))}
       </TableRow>
     ));
