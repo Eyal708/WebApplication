@@ -2,7 +2,8 @@ import {useState, useEffect, useRef} from 'react';
 import React from "react";
 import { Link } from 'react-router-dom';
 import { ClipLoader } from "react-spinners";
-import {Button, Grid} from '@material-ui/core';
+import {Grid} from '@material-ui/core';
+import Button from '@mui/material/Button';
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import usePythonRunner from './pythonRunner';
@@ -16,12 +17,11 @@ import {buttonStyle} from './constants';
 import LogoHeader from './LogoHeader';
 import ExplanationCard from './ExplanationCard';
 import { makeStyles } from '@material-ui/core/styles';
-import { ButtonGroup } from '@mui/material';
 
 export default function TransformationPage({isPyodideLoaded, pythonScript, pyodide, inputMatrixType, 
                                             isIndirectMigration, cardTitle, cardDescription, cardImage,
-                                            showInferenceMethod = false, radioButton, resultMatrices, 
-                                            setResultMatrices}){
+                                            showInferenceMethod = false, radioButton, resultMatrices = [], 
+                                            setResultMatrices = ()=>{}}){
   const [submittedMatrix, setSubmittedMatrix] = useState('');
   const [outputMatrix, setOutputMatrix] = useState('');
   const [margin, setMargin] = useState('8vh');
@@ -62,6 +62,7 @@ export default function TransformationPage({isPyodideLoaded, pythonScript, pyodi
     setOutputMatrix('');
     setSubmittedMultipleRuns(multipleRuns);
     setSubmittedNumRuns(numRuns);
+    setResultMatrices([]);
     console.log(matrix);
     const newMatrix = matrix.map(row=>[...row]);
     setSubmittedMatrix(newMatrix);
@@ -109,20 +110,23 @@ export default function TransformationPage({isPyodideLoaded, pythonScript, pyodi
   const displayDownloadZip = 
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
                   marginTop:'2vh'}}>
-      <ButtonGroup variant="contained" color="primary" aria-label="Basic button group"
-                   size="small" margin="0">
-        <Button type='button' className={classes.button} variant="contained" color="primary"
-                onClick={downloadOutputMatrices} 
-                startIcon={<CloudDownloadIcon style = {{fontSize:"3vmin"}}/>}  
-                component="label">
-                Download Zip ({submittedNumRuns} files)
-        </Button>
-        <Button type='button' className={classes.button} variant="contained" color="primary"
-                startIcon = {<QueryStatsIcon style = {{fontSize:"3vmin"}}/>} 
-                component = {Link} to={{pathname: "/Statistics"}}>
-                Statistics 
-        </Button>
-      </ButtonGroup>
+      <Grid container direction='row' spacing={1} alignContent='center' justifyContent='center'>
+        <Grid item>
+          <Button  className={classes.button} variant='contained' color="secondary"
+                  onClick={downloadOutputMatrices} size="large"
+                  startIcon={<CloudDownloadIcon style = {{fontSize:"3vmin"}}/>}  
+                  component="label">
+                  Download Zip ({submittedNumRuns} files)
+          </Button>
+        </Grid>
+        <Grid item>
+          <Button className={classes.button} variant="contained" color="secondary" size="large"
+                  startIcon = {<QueryStatsIcon style = {{fontSize:"3vmin"}}/>} 
+                  component = {Link} to={{pathname: "/Statistics"}}>
+                  Summary Statistics 
+          </Button>
+        </Grid>
+      </Grid>
     </div>;
     
   const displayOutputMatrix = 
@@ -137,7 +141,8 @@ export default function TransformationPage({isPyodideLoaded, pythonScript, pyodi
               {submittedMatrix && <Button type='button' className = {classes.button} 
                                   onClick={downloadOutputMatrix} variant='contained' 
                                   startIcon={<CloudDownloadIcon style = {{fontSize:"3vmin"}}/>} 
-                                  color="primary" component="label">
+                                  color={inputMatrixType==="Fst"? "success":"primary"} 
+                                  component="label" size="large">
                 Download CSV 
                 </Button>}
           </Grid>    

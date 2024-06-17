@@ -3,7 +3,8 @@ import React from "react";
 import Papa from 'papaparse';
 import './index.css';
 import { Checkbox, FormControlLabel } from '@material-ui/core';
-import {Button, Grid,  TextField, ButtonGroup} from '@material-ui/core';
+import { Grid,  TextField, ButtonGroup} from '@material-ui/core';
+import Button from '@mui/material/Button';
 import InputMatrix from './InputMatrix';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { makeStyles } from '@material-ui/core/styles';
@@ -142,8 +143,9 @@ function InputMatrixForm({onSubmit, inputMatrixSize, setInputMatrixSize, isFst, 
                 <Typography style = {{fontSize:"3vmin"}}> Uploaded file {fileName} </Typography>}
             </Grid>
             <Grid item style = {{marginTop:"0.5vmin"}}>  
-              <ButtonGroup variant="contained" color="success" aria-label="contained primary button group" 
-                size="small">
+              <ButtonGroup variant="contained" color={isFst ? "primary": "success"}
+               aria-label="contained primary button group" 
+                size="large">
                 <Button Button className={classes.button} type="submit" startIcon={<PlayIcon 
                         style={{ fontSize: '3vmin' }} />}>Run</Button>
                 <Button Button className={classes.button} type='button' startIcon = {<ClearIcon
@@ -213,7 +215,8 @@ function InputMatrixForm({onSubmit, inputMatrixSize, setInputMatrixSize, isFst, 
             </Grid>
             <Grid item style={{ marginLeft: '0vw' }}>
               <Button className={classes.button} type="button" onClick={handleSizeChange} variant="contained"
-                      startIcon = {<ChangeIcon style={{ fontSize: '3vmin' }}/>}  color="primary">
+                      startIcon = {<ChangeIcon style={{ fontSize: '3vmin' }}/>}  
+                      color={isFst ? "primary": "success"} size="large">
                 Matrix Size
               </Button>
             </Grid>

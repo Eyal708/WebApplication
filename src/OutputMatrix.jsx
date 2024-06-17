@@ -40,7 +40,6 @@ function OutputMatrixCell({value, cellSize = 2, isDiag = false, isFst = true, di
 
   function OutputMatrix({outputMatrix, matrixSize, isFst = false, extraStats = []}) 
   {
-    console.log(extraStats);
     let cellSize = heatMapSize / matrixSize;
     // if extrasStats in not null, double the cell size
     const [minValue, setMinValue] = useState(Infinity);
@@ -63,7 +62,8 @@ function OutputMatrixCell({value, cellSize = 2, isDiag = false, isFst = true, di
           <OutputMatrixCell cellSize={cellSize} key={colIndex} value={outputMatrix[rowIndex]!==  undefined && 
                             outputMatrix[rowIndex][colIndex] !== undefined ? 
                             outputMatrix[rowIndex][colIndex] : 0}
-            isDiag={rowIndex===colIndex} isFst = {isFst} displayValue = {matrixSize <= 10}
+            isDiag={rowIndex===colIndex} isFst = {isFst} 
+            displayValue = {matrixSize <= 10 || extraStats.length > 0}
             minValue={minValue} maxValue={maxValue} hoverStats = {extraStats.length > 0 ?
             extraStats[rowIndex][colIndex] : null}/>
         ))}
