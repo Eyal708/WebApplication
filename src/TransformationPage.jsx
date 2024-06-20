@@ -107,12 +107,17 @@ export default function TransformationPage({isPyodideLoaded, pythonScript, pyodi
   });
   const classes = useStyles();
 
+  // const onStatisticsClick = () => {
+  //   localStorage.setItem('resultMatrices', JSON.stringify(resultMatrices));
+  //   window.open('/Statistics', '_blank');
+  // }
+
   const displayDownloadZip = 
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
                   marginTop:'2vh'}}>
       <Grid container direction='row' spacing={1} alignContent='center' justifyContent='center'>
         <Grid item>
-          <Button  className={classes.button} variant='contained' color="secondary"
+          <Button  className={classes.button} variant='contained' color="info"
                   onClick={downloadOutputMatrices} size="large"
                   startIcon={<CloudDownloadIcon style = {{fontSize:"3vmin"}}/>}  
                   component="label">
@@ -120,9 +125,9 @@ export default function TransformationPage({isPyodideLoaded, pythonScript, pyodi
           </Button>
         </Grid>
         <Grid item>
-          <Button className={classes.button} variant="contained" color="secondary" size="large"
+          <Button className={classes.button} variant="contained" color="info" size="large"
                   startIcon = {<QueryStatsIcon style = {{fontSize:"3vmin"}}/>} 
-                  component = {Link} to={{pathname: "/Statistics"}}>
+                  component = {Link} to="/statistics">
                   Summary Statistics 
           </Button>
         </Grid>

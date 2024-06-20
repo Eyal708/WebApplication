@@ -30,20 +30,19 @@ function StatisticsPage({resultMatrices}){
     const [buttonClicked, setButtonClicked] = useState(0);
     const [matrixIndex, setMatrixIndex] = useState(0); // The index of the matrix to show in the resultMatrices array
     const [reusltMatrixToShow, setResultMatrixToShow] = useState([]);
-    const [statToShow, setStatToShow] = useState(""); 
+    const [statToShow, setStatToShow] = useState("");
 
     useEffect(() => {
         // Calculate the average matrix and standard deviations when the resultMatrices array changes
         // Use the setAverageMatrix and setStandardDeviations functions to update the state 
         // of the averageMatrix and standardDeviations variables
-        if (resultMatrices.length === 0) return
+        if (resultMatrices.length === 0) return;
         let localAverageMatrix = [];
         let localStandardDeviations = [];
         //set localedgeMatrix as a matrix of zeros same size as the first matrix in result matrices
         let localEdgeMatrix = Array.from({length: resultMatrices[0].length}, () => 
                                         Array.from({length: resultMatrices[0][0].length}, () => 0));
         for (let i = 0; i < resultMatrices[0].length; i++) {
-            console.log("calculating stats");
             localAverageMatrix.push([]);
             localStandardDeviations.push([]);
             for (let j = 0; j < resultMatrices[0][0].length; j++) {
@@ -54,6 +53,8 @@ function StatisticsPage({resultMatrices}){
                         localEdgeMatrix[i][j] += 1;
                     }
                 }
+                //calculate the fraction of matrices in which the edge exists
+                localEdgeMatrix[i][j] = Math.round((localEdgeMatrix[i][j] / resultMatrices.length) * 100) / 100;
                 //round to two digits
                 localAverageMatrix[i].push(Math.round((sum / resultMatrices.length) * 100) / 100);
                 let squaredDifferences = 0;
@@ -94,21 +95,27 @@ function StatisticsPage({resultMatrices}){
     }
     
     const onLeftClick = () => {
+        let newMatrixIndex = matrixIndex
         if (matrixIndex > 0) {
-            setMatrixIndex(matrixIndex - 1);
+            newMatrixIndex = matrixIndex - 1;
         }
         else{
-            setMatrixIndex(resultMatrices.length - 1);
+            newMatrixIndex = resultMatrices.length - 1;
         }
+        setMatrixIndex(newMatrixIndex);
+        setResultMatrixToShow(resultMatrices[newMatrixIndex])
     }
 
     const onRightClick = () => {
+        let newMatrixIndex = matrixIndex 
         if (matrixIndex < resultMatrices.length - 1) {
-            setMatrixIndex(matrixIndex + 1);
+            newMatrixIndex = matrixIndex + 1;
         }
         else{
-            setMatrixIndex(0);
+            newMatrixIndex = 0;
         }
+        setMatrixIndex(newMatrixIndex);
+        setResultMatrixToShow(resultMatrices[newMatrixIndex])
     }
     // This makes the component re render when average matrix is calculated
     useEffect(() => {
@@ -138,8 +145,8 @@ function StatisticsPage({resultMatrices}){
                             </ButtonGroup>
                         </Grid>
                         <Grid item>
-                            {buttonClicked === 2 && <ButtonGroup disableElevation orientation='horizontal' color="primary"
-                                                                 variant = "text" size="small">
+                            {buttonClicked === 2 && <ButtonGroup disableElevation orientation='horizontal' 
+                                                    color="primary" variant = "text" size="small">
                                 <Button onClick = {()=>onLeftClick()} 
                                         startIcon = {<ArrowLeftIcon style={{fontSize:"5vmin"}}/>}>  </Button>
                                 <Button onClick={()=>onRightClick()}  
