@@ -1,4 +1,4 @@
-
+import { ClipLoader } from "react-spinners";
 export const rightArrow =  "\u2192";
 export const fst = "F\u209B\u209C"; 
 export const migrationExplanation = `This tool allows you to get the corresponding ${fst} matrix for a 
@@ -15,3 +15,7 @@ export const heatMapSize = 44;
 export const FST_COLOR_BASE = '6, 107, 170';
 export const MIGRATION_COLOR_BASE = '100, 180, 80';
 export const MIGRATION_MATRIX = 'migrationMatrix';
+export const CLIP_LOADER = <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', 
+                                justifyContent: 'center' }}> <ClipLoader color={"#123abc"} loading={true} 
+                                size = {`${10}vmin`} />
+                          </div>;

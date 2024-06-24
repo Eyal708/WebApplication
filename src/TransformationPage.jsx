@@ -1,6 +1,5 @@
 import {useState, useEffect, useRef} from 'react';
 import React from "react";
-import { Link } from 'react-router-dom';
 import { ClipLoader } from "react-spinners";
 import {Grid} from '@material-ui/core';
 import Button from '@mui/material/Button';
@@ -13,7 +12,7 @@ import JSZip from 'jszip';
 import InputMatrixForm from './InputMatrixForm';
 import OutputMatrix from './OutputMatrix'
 import './index.css';
-import {buttonStyle} from './constants';
+import {buttonStyle, CLIP_LOADER} from './constants';
 import LogoHeader from './LogoHeader';
 import ExplanationCard from './ExplanationCard';
 import { makeStyles } from '@material-ui/core/styles';
@@ -97,20 +96,26 @@ export default function TransformationPage({isPyodideLoaded, pythonScript, pyodi
   };
     
   const displayCalculatingMatrix = 
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-      <ClipLoader color={"#123abc"} loading={true} size = {`${10}vmin`} />
-    </div>;
+    CLIP_LOADER;
   
   const useStyles = makeStyles({
     button: buttonStyle,
       checkboxLabel: {fontSize: '2.5vmin', paddingLeft: '1vw'},
   });
   const classes = useStyles();
+ 
+  // Store the result matrices in local storage so that they can be accessed by the statistics page.
+  const storeResultMatrices = (resultMatrices) => {
+    const uniqueId = `${Date.now()}`; // Generate a unique ID for the result matrices
+    localStorage.setItem(uniqueId, JSON.stringify(resultMatrices));
+    return uniqueId;
+    }
 
-  // const onStatisticsClick = () => {
-  //   localStorage.setItem('resultMatrices', JSON.stringify(resultMatrices));
-  //   window.open('/Statistics', '_blank');
-  // }
+  const onStatisticsClick = () => {
+    const uniqueId = storeResultMatrices(resultMatrices);
+    const statisticPageUrl = `/Statistics?data=${uniqueId}`;
+    window.open(statisticPageUrl, '_blank');
+  }
 
   const displayDownloadZip = 
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
@@ -127,7 +132,7 @@ export default function TransformationPage({isPyodideLoaded, pythonScript, pyodi
         <Grid item>
           <Button className={classes.button} variant="contained" color="info" size="large"
                   startIcon = {<QueryStatsIcon style = {{fontSize:"3vmin"}}/>} 
-                  component = {Link} to="/statistics">
+                  onClick={onStatisticsClick}>
                   Summary Statistics 
           </Button>
         </Grid>

@@ -20,7 +20,7 @@ export default function NewApp() {
           <Route path="/Migration" element={<FstToMigration isPyodideLoaded={isPyodideLoaded} 
                  pythonScript={pythonScript} pyodide={pyodide} resultMatrices={resultMatrices} 
                  setResultMatrices={setResultMatrices}/>} />   
-          <Route path = "/Statistics" element={<StatisticsPage resultMatrices={resultMatrices}/>} /> 
+          <Route path = "/Statistics" element={<StatisticsPage/>} /> 
         </Routes>
       </BrowserRouter>
     </div>

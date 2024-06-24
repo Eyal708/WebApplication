@@ -8,7 +8,8 @@ import LogoHeader from './LogoHeader';
 import SideMenu from './SideMenu';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
-function StatisticsPage({resultMatrices}){
+import {CLIP_LOADER} from './constants';
+function StatisticsPage(){
     //result matrices is any array of 2d arrays representing squared matrices. 
     // This page should disaply the matrix which is the average of all the matrices in the array.
     // When hovered over a cell, the user should see the standard deviation of the values in that cell.
@@ -23,25 +24,41 @@ function StatisticsPage({resultMatrices}){
     // matrices in the array. Take the square root of this value.
     // The standard deviation should be displayed to 2 decimal places.
     // The average matrix should be displayed to 2 decimal places.
+    const [resultMatrices, setResultMatrices] = useState([]); // An array of 2d arrays representing squared matrices
     const [averageMatrix, setAverageMatrix] = useState([]);
     const [edgeMatrix, setEdgeMatrix] = useState([]); // Will show in how many matrices the edge exists
     const [edgeThreshold, setEdgeThreshold] = useState(0); // The minimun value for the edge to be considered
     const [standardDeviations, setStandardDeviations] = useState([]);
     const [buttonClicked, setButtonClicked] = useState(0);
     const [matrixIndex, setMatrixIndex] = useState(0); // The index of the matrix to show in the resultMatrices array
-    const [reusltMatrixToShow, setResultMatrixToShow] = useState([]);
-    const [statToShow, setStatToShow] = useState("");
+    const [resultMatrixToShow, setResultMatrixToShow] = useState([]);
+    const [statToShow, setStatToShow] = useState("average");
 
     useEffect(() => {
         // Calculate the average matrix and standard deviations when the resultMatrices array changes
         // Use the setAverageMatrix and setStandardDeviations functions to update the state 
         // of the averageMatrix and standardDeviations variables
+        const queryParams = new URLSearchParams(window.location.search);
+        const uniqueId = queryParams.get('data')
+
+        if (!uniqueId) return;
+
+        // Retrieve the stored data using the unique ID
+        const storedData = localStorage.getItem(uniqueId);
+        const resultMatrices = storedData ? JSON.parse(storedData) : [];
+        console.log("Result matrices after loading from storage", resultMatrices);
+        setResultMatrices(resultMatrices);
+        localStorage.removeItem(uniqueId);
+
         if (resultMatrices.length === 0) return;
+        console.log("Result matrices after checking length", resultMatrices);
+        
         let localAverageMatrix = [];
         let localStandardDeviations = [];
         //set localedgeMatrix as a matrix of zeros same size as the first matrix in result matrices
         let localEdgeMatrix = Array.from({length: resultMatrices[0].length}, () => 
                                         Array.from({length: resultMatrices[0][0].length}, () => 0));
+        console.log("Result matrices after cheking ResultMatrices[0].length", resultMatrices);
         for (let i = 0; i < resultMatrices[0].length; i++) {
             localAverageMatrix.push([]);
             localStandardDeviations.push([]);
@@ -65,32 +82,36 @@ function StatisticsPage({resultMatrices}){
                                                 (squaredDifferences / resultMatrices.length) * 100) / 100);
             }
         }
+        console.log(localAverageMatrix);
         setAverageMatrix(localAverageMatrix);
         setStandardDeviations(localStandardDeviations);
         setEdgeMatrix(localEdgeMatrix);
+        setResultMatrixToShow(resultMatrices[matrixIndex]);
+        console.log("Ended calculation!");
     }, []);
-    
-    // This component should return a menu with a few buttons stacked on top of each other.
-    // When a button is clicked, it changes color and decides which statsitc to show.
-    // The buttons are: Average Matrix, Edge Matrix, Show Matrices. 
-    const showAvgMatrix = <OutputMatrix outputMatrix={averageMatrix} matrixSize={averageMatrix.length} 
-                                        isFst={false} extraStats={standardDeviations} />;
-     
-    const showEdgeMatrix = <OutputMatrix outputMatrix={edgeMatrix} matrixSize={edgeMatrix.length}
-                            isFst={false}/>;
-    
-    const showResultMatrix = resultMatrices.length > 0 &&
-                                            <OutputMatrix outputMatrix={reusltMatrixToShow} 
-                                                          matrixSize={reusltMatrixToShow.length}/>
+   
+    const determineStatToShow = () => {
+        if (!averageMatrix || !edgeMatrix || !resultMatrixToShow) return CLIP_LOADER;
+        switch (statToShow) {
+            case "average":
+                return averageMatrix && <OutputMatrix outputMatrix={averageMatrix} matrixSize={averageMatrix.length} />;
+            case "edge":
+                return edgeMatrix && <OutputMatrix outputMatrix={edgeMatrix} matrixSize={edgeMatrix.length} />;
+            case "result":
+                return resultMatrixToShow && <OutputMatrix outputMatrix={resultMatrixToShow} matrixSize={resultMatrixToShow.length} />;
+            default:
+                return CLIP_LOADER; // Assuming clipLoader is defined elsewhere as a loading indicator
+        }
+    };
 
     const onStatClick = (buttonIndex) => {
         setButtonClicked(buttonIndex);
         if (buttonIndex === 0) {
-            setStatToShow(showAvgMatrix);
+            setStatToShow("average");
         } else if (buttonIndex === 1) {
-            setStatToShow(showEdgeMatrix);
+            setStatToShow("edge");
         } else if (buttonIndex === 2) {
-            setStatToShow(showResultMatrix);
+            setStatToShow("result");
         }
     }
     
@@ -117,15 +138,7 @@ function StatisticsPage({resultMatrices}){
         setMatrixIndex(newMatrixIndex);
         setResultMatrixToShow(resultMatrices[newMatrixIndex])
     }
-    // This makes the component re render when average matrix is calculated
-    useEffect(() => {
-        setStatToShow(showAvgMatrix);
-    }, [averageMatrix, standardDeviations]);
-
-    useEffect(() => {
-        setResultMatrixToShow(resultMatrices[matrixIndex]);
-        setStatToShow(showResultMatrix);
-    }, [matrixIndex]);
+    
     return(
         <div>
             <LogoHeader/>
@@ -159,7 +172,7 @@ function StatisticsPage({resultMatrices}){
                     <Grid container direction="column" justifyContent="center" alignItems="center" 
                         style={{ minHeight: '100vh', display: 'flex' }}>
                         <Grid item style={{ borderCollapse: 'collapse', margin: '0 auto'}}>
-                            {statToShow}
+                            {determineStatToShow()}
                         </Grid>
                     </Grid>
                 </Grid>
