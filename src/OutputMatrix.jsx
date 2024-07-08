@@ -18,13 +18,13 @@ function OutputMatrixCell({value, cellSize = 2, isDiag = false, isFst = true, di
                       style={{backgroundColor:backgroundColor}}> {value} </TableCell>:
                           <TableCell className="tableCell" id="myTableCellId" 
                                      style = {{backgroundColor:backgroundColor, 
-                                      width: `${cellSize}vmin` ,height:`${cellSize}vmin`}}>
+                                      width: `${cellSize}vmin`, height:`${cellSize}vmin`}}>
 
         </TableCell>;
 
     const useStyles = makeStyles((theme) => ({
       tooltip: {
-        fontSize: "2vmin", // adjust this value to make the tooltip text bigger
+        fontSize: "2vmin", 
       },
     }));
     const classes = useStyles()

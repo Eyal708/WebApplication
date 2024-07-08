@@ -1,6 +1,5 @@
 import {useState, useEffect, useRef} from 'react';
 import React from "react";
-import { ClipLoader } from "react-spinners";
 import {Grid} from '@material-ui/core';
 import Button from '@mui/material/Button';
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload';

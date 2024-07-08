@@ -1,4 +1,5 @@
 import {useState, useEffect} from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import OutputMatrix from './OutputMatrix';
 import { Grid} from '@material-ui/core'
 import Button from '@mui/material/Button';
@@ -8,6 +9,11 @@ import LogoHeader from './LogoHeader';
 import SideMenu from './SideMenu';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import IconButton from '@mui/material/IconButton';
+import DownloadIcon from '@mui/icons-material/Download';
+import Tooltip from '@material-ui/core/Tooltip';
+import Papa from 'papaparse';
+import JSZip from 'jszip';
 import {CLIP_LOADER} from './constants';
 function StatisticsPage(){
     //result matrices is any array of 2d arrays representing squared matrices. 
@@ -94,7 +100,8 @@ function StatisticsPage(){
         if (!averageMatrix || !edgeMatrix || !resultMatrixToShow) return CLIP_LOADER;
         switch (statToShow) {
             case "average":
-                return averageMatrix && <OutputMatrix outputMatrix={averageMatrix} matrixSize={averageMatrix.length} />;
+                return averageMatrix && <OutputMatrix outputMatrix={averageMatrix} 
+                                        matrixSize={averageMatrix.length} extraStats={standardDeviations} />;
             case "edge":
                 return edgeMatrix && <OutputMatrix outputMatrix={edgeMatrix} matrixSize={edgeMatrix.length} />;
             case "result":
@@ -138,23 +145,78 @@ function StatisticsPage(){
         setMatrixIndex(newMatrixIndex);
         setResultMatrixToShow(resultMatrices[newMatrixIndex])
     }
+
+    const downloadStatistics = () => {
+        const zip = new JSZip();
+        const avg_matrix_csv = Papa.unparse(averageMatrix);
+        const std_matrix_csv = Papa.unparse(standardDeviations);
+        const edge_matrix_csv = Papa.unparse(edgeMatrix);
+        zip.file('average_matrix.csv', avg_matrix_csv);
+        zip.file('std_matrix.csv', std_matrix_csv);
+        zip.file('edge_matrix.csv', edge_matrix_csv);
+        
+        // Generate the zip file and trigger the download
+        zip.generateAsync({ type: 'blob' }).then(blob => {
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.download = 'statistics.zip';
+          link.href = url;
+          link.click();
+        });
+      };
+
+    const useStyles = makeStyles((theme) => ({
+        tooltip: {
+          fontSize: "2vmin", // adjust this value to make the tooltip text bigger
+        },
+      }));
+    
+    const classes = useStyles()
     
     return(
         <div>
             <LogoHeader/>
             <SideMenu/>
-            <Grid container direction="row" justifyContent="center" alignItems="center" spacing={1}>
+            <Grid container direction="row" justifyContent="center" alignItems="center" spacing={10}>
                 <Grid item>
                     <Grid container direction="column" justifyContent="center" alignItems="center">
                         <Grid item>
                             <ButtonGroup orientation='vertical' size = "large" color="primary" variant='contained'>
-                                <Button   disabled color="primary" style={{color:"black"}} > Statistics </Button>
-                                <Button color = {buttonClicked===0 ? "success":"primary"} onClick={()=>onStatClick(0)}> 
-                                        Average Matrix </Button>
-                                <Button color = {buttonClicked===1 ? "success":"primary"} onClick={()=>onStatClick(1)}>
-                                        Edge Matrix </Button>
-                                <Button color = {buttonClicked===2 ? "success":"primary"} onClick={()=>onStatClick(2)}> 
-                                        {`Show Matrices (${matrixIndex + 1})`} </Button>
+                                <ButtonGroup orientation='horizontal' size = 'large' color="primary" 
+                                                variant='contained'>
+                                <Button disabled color="primary" style={{color:"black", fontSize:"5vmin"}} >
+                                                        Statistics</Button>
+                                <Tooltip title="Download statistics as a zip file" 
+                                        classes={{ tooltip: classes.tooltip }} placement='top-left'> 
+                                    <IconButton color = "primary" onClick={downloadStatistics}>
+                                                <DownloadIcon style={{fontSize:"7vmin"}}/>
+                                    </IconButton>
+                                </Tooltip>
+                                </ButtonGroup>
+                                <Tooltip title="Each cell shows the average value of the edge across 
+                                                all matrices. Hover on cell to see standard deviation"
+                                                placement='left-end'
+                                                 classes={{ tooltip: classes.tooltip }}>
+                                    <Button color = {buttonClicked===0 ? "success":"primary"}
+                                            onClick={()=>onStatClick(0)} style={{fontSize:"3vmin"}}> 
+                                            Average Matrix </Button>
+                                </Tooltip>
+
+                                <Tooltip title="Each cell shows the fraction of matrices in 
+                                                which the edge exists (meaning its value is greater than 0)"
+                                                placement='left-end'
+                                                classes={{ tooltip: classes.tooltip }}>
+                                    <Button color = {buttonClicked===1 ? "success":"primary"} 
+                                            onClick={()=>onStatClick(1)} style={{fontSize:"3vmin"}}>
+                                            Edge Matrix </Button>
+                                </Tooltip>
+
+                                <Tooltip title="Toggle between matrices" placement="left-end" 
+                                         classes={{ tooltip: classes.tooltip }}>
+                                    <Button color = {buttonClicked===2 ? "success":"primary"} 
+                                            onClick={()=>onStatClick(2)} style ={{fontSize:"3vmin"}}> 
+                                            {`Show Matrices (${matrixIndex + 1})`} </Button>
+                                </Tooltip>
                             </ButtonGroup>
                         </Grid>
                         <Grid item>
@@ -165,7 +227,7 @@ function StatisticsPage(){
                                 <Button onClick={()=>onRightClick()}  
                                         startIcon = {<ArrowRightIcon style={{fontSize:"5vmin"}}/>}>  </Button>
                                 </ButtonGroup>}
-                        </Grid>
+                        </Grid>  
                     </Grid>
                 </Grid>
                 <Grid item>
