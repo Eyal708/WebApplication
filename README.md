@@ -13,11 +13,15 @@ The direct approach is an implementation of Xiran Liu's and Gili Greenbaum's pap
 matrix directly from the fst values.
 Note that due to the random choice of a starting point for the numerical solver used for both methods, a different matrix will be displayed each time
 for the same Fst matrix.
-## Application's home page
+## Application's Home Page
 ![image](https://github.com/Eyal708/WebApplication/assets/101056608/80532dd6-30b1-4fd0-9e4d-b85fd9fd1f2a)
 
-## Migration -> Fst page
-![image](https://github.com/Eyal708/WebApplication/assets/101056608/762c3966-a892-4715-a1c6-82ac7778c863)
+## Migration -> Fst Page
+![image](https://github.com/Eyal708/WebApplication/assets/101056608/3cce9685-6c8c-4bb0-bbb7-ea20dfcad1cd)
+
+## Fst -> Migration Page
+![image](https://github.com/Eyal708/WebApplication/assets/101056608/65bc25b6-4b87-4a8e-ac94-69b9900c9210)
+
 
 
 
