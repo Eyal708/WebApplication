@@ -50,7 +50,6 @@ function InputMatrixForm({onSubmit, inputMatrixSize, setInputMatrixSize, isFst, 
       setShouldClearCells(false);
       setInputMatrix(Array.from({ length: inputMatrixSize }, () => Array.from({ length: inputMatrixSize }, 
                     () => 0)));
-      console.log("clearing cells");
     }
   }, [inputMatrixSize, shouldClearCells]);
   

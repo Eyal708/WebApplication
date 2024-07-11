@@ -32,7 +32,6 @@ def transform_m_to_f(matrix_json) -> str:
     ##!!!this function might fail if the matrix is not conservative!!! this will cause unexpected results.
     # Convert JSON to numpy array
     matrix = json_to_np_array(matrix_json)
-    print("Using my package!")
     result_matrix = np.round(psu.m_to_f(matrix), decimals=2)
     # Convert numpy array back to JSON
     result_json = np_array_to_json(result_matrix)
@@ -50,7 +49,6 @@ def transform_f_to_m(matrix_json, direct=True):
     matrix = json_to_np_array(matrix_json)
     if direct:
         #run Xiran's method
-        print("direct appraoch")
         result_matrix = np.round(psu.f_to_m(matrix, indirect=False, bounds_m = (0, np.inf))[0], 2)
     else:
         #run Eyal's metohd

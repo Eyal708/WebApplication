@@ -4,7 +4,6 @@ import {Grid} from '@material-ui/core';
 import Button from '@mui/material/Button';
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
-import usePythonRunner from './pythonRunner';
 import SideMenu from './SideMenu';
 import Papa from 'papaparse';
 import JSZip from 'jszip';
@@ -16,10 +15,9 @@ import LogoHeader from './LogoHeader';
 import ExplanationCard from './ExplanationCard';
 import { makeStyles } from '@material-ui/core/styles';
 
-export default function TransformationPage({isPyodideLoaded, pythonScript, pyodide, inputMatrixType, 
-                                            isIndirectMigration, cardTitle, cardDescription, cardImage,
-                                            showInferenceMethod = false, radioButton, resultMatrices = [], 
-                                            setResultMatrices = ()=>{}}){
+export default function TransformationPage({inputMatrixType, isIndirectMigration, cardTitle, cardDescription, 
+                                            cardImage, showInferenceMethod = false, radioButton, 
+                                            resultMatrices = [], setResultMatrices = ()=>{}}){
   const [submittedMatrix, setSubmittedMatrix] = useState('');
   const [outputMatrix, setOutputMatrix] = useState('');
   const [margin, setMargin] = useState('8vh');
@@ -30,6 +28,14 @@ export default function TransformationPage({isPyodideLoaded, pythonScript, pyodi
   const [submittedMultipleRuns, setSubmittedMultipleRuns] = useState(false);
   const outputRef = useRef(null); // Create a ref for the output matrix
   const inputRef = useRef(null) ; 
+  const workerRef = useRef (null);
+
+  useEffect(() => { // Create a new worker when the component mounts
+    workerRef.current = new Worker('/pythonWorker.js');
+    return () => { // Terminate the worker when the component unmounts
+        workerRef.current.terminate();
+    }
+    }, []);
 
   useEffect(() => {
     if (outputMatrix && outputRef.current) {
@@ -49,9 +55,38 @@ export default function TransformationPage({isPyodideLoaded, pythonScript, pyodi
     return () => clearTimeout(timer);
   }, [inputMatrixSize, outputMatrix]);
 
-  
-  usePythonRunner(submittedMatrix, setOutputMatrix, inputMatrixType, isIndirectMigration, isPyodideLoaded, 
-                  pythonScript, pyodide, setResultMatrices, submittedMultipleRuns, submittedNumRuns);
+  useEffect(() => {
+    if (!submittedMatrix) return;
+    const request_id = Date.now();
+    const handleMessage = (e) => {
+        console.log("Received message from worker", e.data)
+        const { request_id: response_id, result } = e.data;
+        if (response_id === request_id) {
+          if (multipleRuns) {
+            setResultMatrices(result);
+          } else {
+            console.log("Setting output matrix", result);
+            setOutputMatrix(result);
+          }
+          // Remove the event listener after receiving the response
+          workerRef.current.removeEventListener('message', handleMessage);
+        }
+      };
+    
+      // Assign the event listener to the worker
+    workerRef.current.addEventListener('message', handleMessage);
+    
+    const request = {
+        inputMatrix: submittedMatrix,
+        inputMatrixType: inputMatrixType,
+        isIndirectMigration: isIndirectMigration,
+        multipleRuns: multipleRuns,
+        numRuns: numRuns,
+        request_id: request_id
+    };
+    workerRef.current.postMessage(request);
+    
+  }, [submittedMatrix]);
 
   
   const onSubmit = (event, matrix) =>
@@ -61,7 +96,6 @@ export default function TransformationPage({isPyodideLoaded, pythonScript, pyodi
     setSubmittedMultipleRuns(multipleRuns);
     setSubmittedNumRuns(numRuns);
     setResultMatrices([]);
-    console.log(matrix);
     const newMatrix = matrix.map(row=>[...row]);
     setSubmittedMatrix(newMatrix);
     
