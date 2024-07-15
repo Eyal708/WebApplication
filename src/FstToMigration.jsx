@@ -6,7 +6,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import './index.css';
-import {fst, rightArrow, migrationExplanation} from './constants';
+import {fst, rightArrow, fstExplanation} from './constants';
 import MigrationImage from './Images/DNA.jpg';
 import TransformationPage from './TransformationPage';
 
@@ -35,7 +35,7 @@ export default function FstToMigration({ resultMatrices, setResultMatrices}) {
     </FormControl>
 return (
         <TransformationPage inputMatrixType="Fst" cardTitle = {cardTitle} cardImage = {MigrationImage}
-        cardDescription={migrationExplanation} isIndirectMigration={inferenceMethod==="Indirect"}
+        cardDescription={fstExplanation} isIndirectMigration={inferenceMethod==="Indirect"}
         showInferenceMethod = {true} radioButton = {radioButton} resultMatrices = {resultMatrices}
         setResultMatrices = {setResultMatrices} /> 
   );

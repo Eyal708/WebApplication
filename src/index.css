@@ -1,5 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Tangerine&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Amatic+SC&display=swap');
 body {
   margin: 0;
   /* background-image: url('./Images/Background.jpg');  set the background image */
@@ -97,6 +100,7 @@ code {
 }
 
 .logo-text {
+  margin-top:1vmin;
   font-family: 'Dancing Script', cursive;  /* use a hand writing font */
   font-size: 3vmin;  /* adjust as needed */
   text-align: right;  /* align the text to the right */

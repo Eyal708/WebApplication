@@ -52,19 +52,16 @@ function StatisticsPage(){
         // Retrieve the stored data using the unique ID
         const storedData = localStorage.getItem(uniqueId);
         const resultMatrices = storedData ? JSON.parse(storedData) : [];
-        console.log("Result matrices after loading from storage", resultMatrices);
         setResultMatrices(resultMatrices);
         localStorage.removeItem(uniqueId);
 
         if (resultMatrices.length === 0) return;
-        console.log("Result matrices after checking length", resultMatrices);
         
         let localAverageMatrix = [];
         let localStandardDeviations = [];
         //set localedgeMatrix as a matrix of zeros same size as the first matrix in result matrices
         let localEdgeMatrix = Array.from({length: resultMatrices[0].length}, () => 
                                         Array.from({length: resultMatrices[0][0].length}, () => 0));
-        console.log("Result matrices after cheking ResultMatrices[0].length", resultMatrices);
         for (let i = 0; i < resultMatrices[0].length; i++) {
             localAverageMatrix.push([]);
             localStandardDeviations.push([]);
@@ -97,6 +94,7 @@ function StatisticsPage(){
     }, []);
    
     const determineStatToShow = () => {
+        console.log("Determining stat to show");
         if (!averageMatrix || !edgeMatrix || !resultMatrixToShow) return CLIP_LOADER;
         switch (statToShow) {
             case "average":
@@ -105,9 +103,10 @@ function StatisticsPage(){
             case "edge":
                 return edgeMatrix && <OutputMatrix outputMatrix={edgeMatrix} matrixSize={edgeMatrix.length} />;
             case "result":
-                return resultMatrixToShow && <OutputMatrix outputMatrix={resultMatrixToShow} matrixSize={resultMatrixToShow.length} />;
+                return resultMatrixToShow && <OutputMatrix outputMatrix={resultMatrixToShow} 
+                                                           matrixSize={resultMatrixToShow.length} />;
             default:
-                return CLIP_LOADER; // Assuming clipLoader is defined elsewhere as a loading indicator
+                return CLIP_LOADER; 
         }
     };
 
@@ -154,7 +153,6 @@ function StatisticsPage(){
         zip.file('average_matrix.csv', avg_matrix_csv);
         zip.file('std_matrix.csv', std_matrix_csv);
         zip.file('edge_matrix.csv', edge_matrix_csv);
-        
         // Generate the zip file and trigger the download
         zip.generateAsync({ type: 'blob' }).then(blob => {
           const url = URL.createObjectURL(blob);
@@ -186,15 +184,16 @@ function StatisticsPage(){
                                                 variant='contained'>
                                 <Button disabled color="primary" style={{color:"black", fontSize:"5vmin"}} >
                                                         Statistics</Button>
-                                <Tooltip title="Download statistics as a zip file" 
-                                        classes={{ tooltip: classes.tooltip }} placement='top-left'> 
+                                <Tooltip title="Download statistics as a zip file." 
+                                        classes={{ tooltip: classes.tooltip }} placement='top-end'> 
                                     <IconButton color = "primary" onClick={downloadStatistics}>
                                                 <DownloadIcon style={{fontSize:"7vmin"}}/>
                                     </IconButton>
                                 </Tooltip>
                                 </ButtonGroup>
                                 <Tooltip title="Each cell shows the average value of the edge across 
-                                                all matrices. Hover on cell to see standard deviation"
+                                                all matrices. 
+                                                Hover over a cell to see the standard deviation."
                                                 placement='left-end'
                                                  classes={{ tooltip: classes.tooltip }}>
                                     <Button color = {buttonClicked===0 ? "success":"primary"}
@@ -203,7 +202,7 @@ function StatisticsPage(){
                                 </Tooltip>
 
                                 <Tooltip title="Each cell shows the fraction of matrices in 
-                                                which the edge exists (meaning its value is greater than 0)"
+                                                which the edge exists (meaning its value is greater than 0)."
                                                 placement='left-end'
                                                 classes={{ tooltip: classes.tooltip }}>
                                     <Button color = {buttonClicked===1 ? "success":"primary"} 
@@ -211,7 +210,7 @@ function StatisticsPage(){
                                             Edge Matrix </Button>
                                 </Tooltip>
 
-                                <Tooltip title="Toggle between matrices" placement="left-end" 
+                                <Tooltip title="Toggle between matrices." placement="left-end" 
                                          classes={{ tooltip: classes.tooltip }}>
                                     <Button color = {buttonClicked===2 ? "success":"primary"} 
                                             onClick={()=>onStatClick(2)} style ={{fontSize:"3vmin"}}> 

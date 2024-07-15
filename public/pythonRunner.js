@@ -1,7 +1,6 @@
 async function pythonRunner(inputMatrix, inputMatrixType, isIndirectMigration, pythonScript, pyodide, 
                       multipleRuns, numRuns) {
   
-  console.log("running usePythonRunner");
   const runPythonCode = async () => {
     const matrixJson = JSON.stringify(inputMatrix);
     const pythonBool = !isIndirectMigration ? "True" : "False";

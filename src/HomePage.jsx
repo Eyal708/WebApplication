@@ -15,16 +15,16 @@ export default function HomePage() {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 
                       'flex-start', gap: '20px' }}>
             <HomePageCard
-              link="/Migration" 
+              link="/FstToMigration" 
               image={MigrationImage} 
               title={fst + " " + rightArrow + " " +  "Migration"} 
-              description={"Upload an " + fst + " matrix and get possible corresponding migration matrices"}
+              description={"Upload an " + fst + " matrix and get possible corresponding migration matrices."}
             />
             <HomePageCard
-              link="/Fst" 
+              link="/MigrationToFst" 
               image={FstImage} 
               title={"Migration" + " " + rightArrow + " " +  fst} 
-              description={"Upload a migration matrix and get the corresponding " + fst + " matrix"} 
+              description={"Upload a migration matrix and get the corresponding " + fst + " matrix."} 
             />
           </div>
         </div>

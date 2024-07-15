@@ -23,8 +23,9 @@ let pyodideReady = (async () => {
   self.onmessage = async (e) => {
     await pyodideReady; // Wait for Pyodide to be ready
     const request = e.data;
-    const result = await pythonRunner(request.inputMatrix, request.inputMatrixType, request.isIndirectMigration,
-                                pythonScript, pyodide, request.multipleRuns, request.numRuns);
+    const result = await pythonRunner(request.inputMatrix, request.inputMatrixType, 
+                                      request.isIndirectMigration, pythonScript, pyodide, 
+                                      request.multipleRuns, request.numRuns);
     const request_id = request.request_id;
     self.postMessage({ request_id, result });
   };

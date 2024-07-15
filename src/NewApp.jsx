@@ -3,6 +3,7 @@ import HomePage from "./HomePage"
 import MigrationToFst from "./MigrationToFst";
 import FstToMigration from "./FstToMigration"
 import StatisticsPage from "./Statistics";
+import AboutPage from "./AboutPage";
 import { useState } from "react";
 export default function NewApp() {
     const [resultMatrices, setResultMatrices] = useState([]);
@@ -11,10 +12,12 @@ export default function NewApp() {
       <BrowserRouter basename="/">
         <Routes>
           <Route path="/" element={<HomePage/>} />
-          <Route path="/Fst" element={<MigrationToFst/>} />
-          <Route path="/Migration" element={<FstToMigration resultMatrices={resultMatrices} 
+          <Route path="/MigrationToFst" element={<MigrationToFst/>} />
+          <Route path="/FstToMigration" element={<FstToMigration resultMatrices={resultMatrices} 
                                    setResultMatrices={setResultMatrices}/>}/>   
           <Route path = "/Statistics" element={<StatisticsPage/>} /> 
+          <Route path = "/About" element={<AboutPage/>} /> 
+
         </Routes>
       </BrowserRouter>
     </div>

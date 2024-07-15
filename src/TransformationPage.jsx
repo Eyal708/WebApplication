@@ -26,6 +26,7 @@ export default function TransformationPage({inputMatrixType, isIndirectMigration
   const [numRuns, setNumRuns] = useState(2);
   const [submittedNumRuns, setSubmittedNumRuns] = useState(2);
   const [submittedMultipleRuns, setSubmittedMultipleRuns] = useState(false);
+  const [running, setRunning] = useState(false); // State to track if the worker is running
   const outputRef = useRef(null); // Create a ref for the output matrix
   const inputRef = useRef(null) ; 
   const workerRef = useRef (null);
@@ -59,16 +60,14 @@ export default function TransformationPage({inputMatrixType, isIndirectMigration
     if (!submittedMatrix) return;
     const request_id = Date.now();
     const handleMessage = (e) => {
-        console.log("Received message from worker", e.data)
         const { request_id: response_id, result } = e.data;
         if (response_id === request_id) {
           if (multipleRuns) {
             setResultMatrices(result);
           } else {
-            console.log("Setting output matrix", result);
             setOutputMatrix(result);
           }
-          // Remove the event listener after receiving the response
+          setRunning(false); // Set running to false after receiving the response
           workerRef.current.removeEventListener('message', handleMessage);
         }
       };
@@ -92,12 +91,15 @@ export default function TransformationPage({inputMatrixType, isIndirectMigration
   const onSubmit = (event, matrix) =>
   {
     event.preventDefault();
+    if (running) return; // Prevent multiple submissions
     setOutputMatrix('');
     setSubmittedMultipleRuns(multipleRuns);
     setSubmittedNumRuns(numRuns);
     setResultMatrices([]);
     const newMatrix = matrix.map(row=>[...row]);
     setSubmittedMatrix(newMatrix);
+    setRunning(true);
+
     
   }    
   
