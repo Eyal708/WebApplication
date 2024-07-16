@@ -9,7 +9,7 @@ import { makeStyles } from '@material-ui/core/styles'
 const useStyles = makeStyles(() => ({
   root: {
     width: '28vw',
-    height: '40vh',
+    height: '45vh',
     margin: "3vmin",
     transition: 'transform 0.3s ease-in-out', // Add transition
     '&:hover': { // Add hover pseudo-class

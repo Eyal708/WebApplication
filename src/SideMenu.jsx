@@ -11,9 +11,11 @@ import HomeIcon from '@mui/icons-material/Home';
 import InfoIcon from '@mui/icons-material/Info';
 import HubRoundedIcon from '@mui/icons-material/HubRounded';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
+import Typography from '@mui/material/Typography'; 
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
-import { rightArrow } from './constants';
+import { rightArrow, fst } from './constants';
+import { InlineMath } from 'react-katex';
 
 export default function SideMenu() {
   const [open, setOpen] = React.useState(false);
@@ -30,20 +32,23 @@ export default function SideMenu() {
   const classes = useStyles();
 
   const DrawerList = (
-    <Box sx={{ width: '20wh' }} role="presentation" onClick={toggleDrawer(false)}>
+    <Box sx={{ width: '20wh' }} role="presentation" onClick={toggleDrawer(false)}>  
       <List>
-        {['Home', `Fst ${rightArrow} Migration`, `Migration ${rightArrow} Fst`, 
-                                    'About Our Software'].map((text, index) => (
-          <ListItem key={text} disablePaddin>
-            <ListItemButton component={Link} to={ index == 0 ? "/": index == 1?
-            "/FstToMigration": index == 2? "/MigrationToFst": "/About"}>
+        {[
+          { text: 'Home', path: "/" },
+          { text: <><InlineMath math="F_{st}"/> {rightArrow} Migration</>, path: "/FstToMigration" },
+          { text: <>Migration {rightArrow} <InlineMath math="F_{st}"/></>, path: "/MigrationToFst" },
+          { text: 'About Our Software', path: "/About" }
+        ].map((item, index) => (
+          <ListItem key={index} disablePadding>
+            <ListItemButton component={Link} to={item.path}>
               <ListItemIcon>
-                {index === 0 ? <HomeIcon style={{color:"black"}}/> : index === 1 ? 
-                <HubRoundedIcon style={{color:'darkblue'}}/> : 
-                index === 2 ? <HubRoundedIcon style = {{color:"darkgreen"}} /> : 
-                              <InfoIcon/>}
+                {index === 0 ? <HomeIcon style={{color:"black"}} fontSize="large"/> : 
+                index === 1 ? <HubRoundedIcon style={{color:'darkblue'}} fontSize="large" /> :
+                index === 2 ? <HubRoundedIcon style={{color:"darkgreen"}} fontSize="large" /> : 
+                              <InfoIcon fontSize="large"/>}
               </ListItemIcon>
-              <ListItemText primary={text} />
+              <ListItemText primary={<Typography style={{ fontSize: '1.5rem' }}>{item.text}</Typography>} />
             </ListItemButton>
           </ListItem>
         ))}

@@ -9,13 +9,14 @@ import './index.css';
 import {fst, rightArrow, fstExplanation} from './constants';
 import MigrationImage from './Images/DNA.jpg';
 import TransformationPage from './TransformationPage';
+import { InlineMath } from "react-katex";
 
 export default function FstToMigration({ resultMatrices, setResultMatrices}) {
   const [inferenceMethod, setInferenceMethod] = useState('Direct');
   const handleMethodChange = (event) => {
       setInferenceMethod(event.target.value);
     };
-  const cardTitle = fst + " " + rightArrow + " " +  "Migration";
+  const cardTitle = <> <InlineMath math="F_{st}"/> {rightArrow} Migration</>;
   const radioButton = <FormControl>
       <FormLabel id="inference-method" style={{fontSize:"2vmin"}}>Inference Method</FormLabel>
       <RadioGroup

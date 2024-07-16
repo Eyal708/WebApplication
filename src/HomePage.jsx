@@ -5,6 +5,8 @@ import LogoHeader from './LogoHeader';
 import {fst, rightArrow} from './constants';
 import './index.css';
 import SideMenu from './SideMenu';
+import 'katex/dist/katex.min.css';
+import { InlineMath } from 'react-katex';
 
 export default function HomePage() {
     return (
@@ -17,14 +19,14 @@ export default function HomePage() {
             <HomePageCard
               link="/FstToMigration" 
               image={MigrationImage} 
-              title={fst + " " + rightArrow + " " +  "Migration"} 
-              description={"Upload an " + fst + " matrix and get possible corresponding migration matrices."}
+              title={<><InlineMath math="F_{st}"/> {rightArrow} Migration</>}
+              description={<>Upload an <InlineMath math="F_{st}"/> matrix and get possible corresponding migration matrices and summary statistics.</>}
             />
             <HomePageCard
               link="/MigrationToFst" 
               image={FstImage} 
-              title={"Migration" + " " + rightArrow + " " +  fst} 
-              description={"Upload a migration matrix and get the corresponding " + fst + " matrix."} 
+              title={<>Migration {rightArrow} <InlineMath math="F_{st}"/></>}
+              description={<>Upload a migration matrix and get the corresponding <InlineMath math=" F_{st}"/>  matrix.</>} 
             />
           </div>
         </div>
