@@ -7,6 +7,7 @@ import {fst, rightArrow} from './constants';
 import 'katex/dist/katex.min.css';
 import { InlineMath } from 'react-katex';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import ScrollMenu from './ScrollMenu';
 // Create a theme instance and set the typography's font family
 const theme = createTheme({
 
@@ -28,6 +29,7 @@ const About = () => {
       <div>
         <LogoHeader />
         <SideMenu />
+        <ScrollMenu />
         <Grid container spacing={2} className="about-container" direction="column" paddingLeft="15vmin" 
               paddingTop="8vmin">
           <Grid item>
@@ -39,14 +41,14 @@ const About = () => {
                 connection between`} <InlineMath math="F_{st}"/> {`and Migration in subpopultaions of wild species.`}   
             </Typography>
           </Grid>
-          <Grid item>
-            <Typography variant="h4" color="GrayText">Setting</Typography>
+          <Grid item> 
+            <Typography variant="h4" id="setting" color="GrayText">Setting</Typography>
           </Grid>
           <Grid item>
             <Typography color="darkslategrey" style={{maxWidth:"70%", wordWrap:"break-word"}}>
                 {`In our model, we consider a set of subpopulations of size`} <InlineMath math = 
                 "n \in \mathbf {N}"/>{", each of size"} <InlineMath math = "N"/> 
-                {` diploid individuals. For a set of subpopulations, we can construnct three matrices: `} 
+                {` diploid individuals. For a set of subpopulations, we can construct three matrices: `} 
                 <ol>
                   <li style={{marginBottom:"1vmin"}}>
                     {"A pariwiswe"} <InlineMath math="F_{st}"/> 
@@ -78,10 +80,12 @@ const About = () => {
                   </li>
                 </ol>
                 {"Under our model, the connection between "}<InlineMath math="M"/>{" and "}<InlineMath math="T"/>
-                {" is given by a linear system of equations developed by Wilkinson-Herbots (2003) and the "}
-                {"connection between "}<InlineMath math="T"/>{" and "}<InlineMath math="F"/>
-                {" is given by a non-linear system of equations developed by Slatkin (1991). Combining these "}
-                {"two systems of equations, we can calculate the "}<InlineMath math="F_{st}"/>
+                {" is given by a linear system of equations developed by "} 
+                <a href="https://www.cambridge.org/core/journals/advances-in-applied-probability/article/abs/coalescence-times-and-fst-values-in-subdivided-populations-with-symmetric-structure/62A13681772FA4282808954FB45F16AA" target="_blank" rel="noopener noreferrer">Wilkinson-Herbots (2003)</a> 
+                {" and the connection between "}<InlineMath math="T"/>{" and "}<InlineMath math="F"/>
+                {" is given by a non-linear system of equations developed by "}
+                <a href="https://www.cambridge.org/core/journals/genetics-research/article/inbreeding-coefficients-and-coalescence-times/FCC418CBC6F021B741C83FDE6A0E7558" target="_blank" rel="noopener noreferrer">Slatkin (1991)</a>  
+                {". Combining these two systems of equations, we can calculate the "}<InlineMath math="F_{st}"/>
                 {" matrix given the migration matrix. However, given an "}<InlineMath math="F_{st}"/>
                 {" matrix there are usually infinte possible corresponding migration matrices. Our software "}
                 {"offers two different tools: one takes as input a migration matrix and gives the corresponding "}
@@ -91,7 +95,7 @@ const About = () => {
             </Typography>
           </Grid>
           <Grid item>
-            <Typography variant="h4" color="GrayText">
+            <Typography variant="h4" id="migrationToFst" color="GrayText">
               <>Migration {rightArrow} <InlineMath math="F_{st}"/></>
             </Typography>
           </Grid>
@@ -106,7 +110,7 @@ const About = () => {
             </Typography>
           </Grid>
           <Grid item>
-            <Typography variant="h4" color="GrayText">
+            <Typography variant="h4" id="fstToMigration" color="GrayText">
               {<><InlineMath math="F_{st}"/> {rightArrow} Migration</>}
             </Typography>
           </Grid>
@@ -116,7 +120,7 @@ const About = () => {
               {"The migration matrices can be inferred using two different methods: the 'Direct' method constructs "}
               {"the full reverse transfomration from "}<InlineMath math="F_{st}"/> {"to migration and solves "}
               {"this non-linear system of equations numerically. Each run results a different solution becuase"}
-              {" a random starting point is given to the numerical solver. The 'Indirect' method first constructs the "}
+              {" a random starting point is given to the numerical solver. The 'Indirect' method first constructs "}
               {"the reverse transformation from"} <InlineMath math="F_{st}"/> {"to coalescence times and solves "}
               {"this non-linear system of equations numerically. Then, the migration matrix is calculated analitcally from the "}
               {"coalescence times matrix using the reverse transformation from coalescence times to migration, "}
@@ -128,6 +132,41 @@ const About = () => {
               {" for the given "}<InlineMath math="F_{st}"/> {" matrix."}
             </Typography>
           </Grid>
+          <Grid item>
+  <Typography variant="h4" id="references" color="GrayText">
+      References
+  </Typography>
+</Grid>
+
+<Grid item>
+  <Typography color="darkslategrey" style={{maxWidth:"70%", wordWrap:"break-word"}}>
+    <ol>
+      <li>
+        Wilkinson-Herbots, H.M. (2003). Coalescence times and F<sub>ST</sub> values in subdivided populations with symmetric structure. <i>Advances in Applied Probability</i>, 35(2), 474-491. Available at: <a href="https://www.cambridge.org/core/journals/advances-in-applied-probability/article/abs/coalescence-times-and-fst-values-in-subdivided-populations-with-symmetric-structure/62A13681772FA4282808954FB45F16AA" target="_blank" rel="noopener noreferrer">Cambridge University</a>
+      </li>
+      <li>
+        Slatkin, M. (1991). Inbreeding coefficients and coalescence times. <i>Genetic Research</i>, 58(2), 167-175. Available at: <a href="https://www.cambridge.org/core/journals/genetics-research/article/inbreeding-coefficients-and-coalescence-times/FCC418CBC6F021B741C83FDE6A0E7558" target="_blank" rel="noopener noreferrer">Cambridge University</a>
+      </li>
+    </ol>
+  </Typography>
+</Grid>
+
+<Grid item>
+  <Typography variant="h4" id="credits" color="GrayText">
+    Credits
+  </Typography>
+</Grid>
+<Grid item>
+  <Typography color="darkslategrey" style={{maxWidth:"70%", wordWrap:"break-word"}}>
+    This software was developed at <a href="https://greenbaumlab.com" target="_blank" rel="noopener noreferrer">Greenbaum Lab</a> by:
+    <ul>
+      <li>Eyal Haluts</li>
+      <li>Keith Harris</li>
+      <li>Gili Greenbaum</li>
+    </ul>
+    For any questions, you can send an email to: <a href="mailto:eyal.haluts@mail.huji.ac.il">eyal.haluts@mail.huji.ac.il</a>
+  </Typography>
+</Grid>
         </Grid>
       </div>
     </ThemeProvider>

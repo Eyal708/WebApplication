@@ -63,7 +63,7 @@ function OutputMatrixCell({value, cellSize = 2, isDiag = false, isFst = true, di
                             outputMatrix[rowIndex][colIndex] !== undefined ? 
                             outputMatrix[rowIndex][colIndex] : 0}
             isDiag={rowIndex===colIndex} isFst = {isFst} 
-            displayValue = {matrixSize <= 10 || extraStats.length > 0}
+            displayValue = {matrixSize <= 10 }
             minValue={minValue} maxValue={maxValue} hoverStats = {extraStats.length > 0 ?
             extraStats[rowIndex][colIndex] : null}/>
         ))}

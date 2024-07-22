@@ -16,7 +16,17 @@ export default function FstToMigration({ resultMatrices, setResultMatrices}) {
   const handleMethodChange = (event) => {
       setInferenceMethod(event.target.value);
     };
-  const cardTitle = <> <InlineMath math="F_{st}"/> {rightArrow} Migration</>;
+    
+  const cardTitle = (
+    <>
+      <InlineMath math="F_{st}" />
+      <span style={{ marginLeft: '5px' }}></span>
+      {rightArrow}
+      <span style={{ marginRight: '5px' }}></span>
+      Migration 
+    </>
+  );
+
   const radioButton = <FormControl>
       <FormLabel id="inference-method" style={{fontSize:"2vmin"}}>Inference Method</FormLabel>
       <RadioGroup

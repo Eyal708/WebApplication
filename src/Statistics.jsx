@@ -7,14 +7,15 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import './index.css';
 import LogoHeader from './LogoHeader';
 import SideMenu from './SideMenu';
-import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
-import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import ArrowRightIcon from '@mui/icons-material/SkipNext';
+import ArrowLeftIcon from '@mui/icons-material/SkipPrevious';
 import IconButton from '@mui/material/IconButton';
 import DownloadIcon from '@mui/icons-material/Download';
 import Tooltip from '@material-ui/core/Tooltip';
 import Papa from 'papaparse';
 import JSZip from 'jszip';
 import {CLIP_LOADER} from './constants';
+import Typography from '@material-ui/core/Typography';
 function StatisticsPage(){
     //result matrices is any array of 2d arrays representing squared matrices. 
     // This page should disaply the matrix which is the average of all the matrices in the array.
@@ -164,82 +165,115 @@ function StatisticsPage(){
       };
 
     const useStyles = makeStyles((theme) => ({
-        tooltip: {
-          fontSize: "2vmin", // adjust this value to make the tooltip text bigger
+        menu: {
+            position: 'fixed',
+            top: '9vmin', 
+            left: '1vmin',
+            display: 'flex',
+            flexDirection: 'column',
+            backgroundColor: 'white', // Optional: Add background color to the menu for better visibility
+            padding: theme.spacing(2), // Optional: Add some padding around the menu items
+            borderRadius: theme.shape.borderRadius, // Optional: Round the corners of the menu
+            boxShadow: theme.shadows[6], // Optional: Add shadow to the menu for a lifted effect
         },
-      }));
-    
-    const classes = useStyles()
-    
-    return(
-        <div>
-            <LogoHeader/>
-            <SideMenu/>
-            <Grid container direction="row" justifyContent="center" alignItems="center" spacing={10}>
-                <Grid item>
-                    <Grid container direction="column" justifyContent="center" alignItems="center">
-                        <Grid item>
-                            <ButtonGroup orientation='vertical' size = "large" color="primary" variant='contained'>
-                                <ButtonGroup orientation='horizontal' size = 'large' color="primary" 
-                                                variant='contained'>
-                                <Button disabled color="primary" style={{color:"black", fontSize:"5vmin"}} >
-                                                        Statistics</Button>
-                                <Tooltip title="Download statistics as a zip file." 
-                                        classes={{ tooltip: classes.tooltip }} placement='top-end'> 
-                                    <IconButton color = "primary" onClick={downloadStatistics}>
-                                                <DownloadIcon style={{fontSize:"7vmin"}}/>
-                                    </IconButton>
-                                </Tooltip>
-                                </ButtonGroup>
-                                <Tooltip title="Each cell shows the average value of the edge across 
-                                                all matrices. 
-                                                Hover over a cell to see the standard deviation."
-                                                placement='left-end'
-                                                 classes={{ tooltip: classes.tooltip }}>
-                                    <Button color = {buttonClicked===0 ? "success":"primary"}
-                                            onClick={()=>onStatClick(0)} style={{fontSize:"3vmin"}}> 
-                                            Average Matrix </Button>
-                                </Tooltip>
 
-                                <Tooltip title="Each cell shows the fraction of matrices in 
-                                                which the edge exists (meaning its value is greater than 0)."
-                                                placement='left-end'
-                                                classes={{ tooltip: classes.tooltip }}>
-                                    <Button color = {buttonClicked===1 ? "success":"primary"} 
-                                            onClick={()=>onStatClick(1)} style={{fontSize:"3vmin"}}>
-                                            Edge Matrix </Button>
-                                </Tooltip>
+        title: {
+            marginBottom: theme.spacing(2), // Space between title and first menu item
+            fontSize: '6vmin', // Increase font size for bigger headline
+            color: 'black', // Change color, example uses Material-UI's primary color
+            fontFamily: 'Roboto, sans-serif', // Correct font family
+            align:"center"
+        },
+        
+        menuItem: {
+            margin: theme.spacing(2),
+            fontSize: '4vmin', // Correct font size
+            fontFamily: 'Roboto, sans-serif', // Correct font family
+            '&:hover': {
+            cursor: 'pointer',
+            textDecoration: 'underline',
+            },
+        },
 
-                                <Tooltip title="Toggle between matrices." placement="left-end" 
-                                         classes={{ tooltip: classes.tooltip }}>
-                                    <Button color = {buttonClicked===2 ? "success":"primary"} 
-                                            onClick={()=>onStatClick(2)} style ={{fontSize:"3vmin"}}> 
-                                            {`Show Matrices (${matrixIndex + 1})`} </Button>
-                                </Tooltip>
-                            </ButtonGroup>
-                        </Grid>
-                        <Grid item>
-                            {buttonClicked === 2 && <ButtonGroup disableElevation orientation='horizontal' 
-                                                    color="primary" variant = "text" size="small">
-                                <Button onClick = {()=>onLeftClick()} 
-                                        startIcon = {<ArrowLeftIcon style={{fontSize:"5vmin"}}/>}>  </Button>
-                                <Button onClick={()=>onRightClick()}  
-                                        startIcon = {<ArrowRightIcon style={{fontSize:"5vmin"}}/>}>  </Button>
-                                </ButtonGroup>}
-                        </Grid>  
-                    </Grid>
+        tooltip: {
+            fontSize: "2vmin",
+        },
+    }));
+
+    const classes = useStyles();
+    
+    return (
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+            <LogoHeader />
+            <SideMenu />
+            <Grid container direction="column" justifyContent="center" alignItems="center" 
+                        alignContent='center' spacing={1} style={{paddingLeft:"5vmin"}}>
+                <Grid item style={{ borderCollapse: 'collapse', margin: '0 auto' }}>
+                    {determineStatToShow()}
                 </Grid>
+
                 <Grid item>
-                    <Grid container direction="column" justifyContent="center" alignItems="center" 
-                        style={{ minHeight: '100vh', display: 'flex' }}>
-                        <Grid item style={{ borderCollapse: 'collapse', margin: '0 auto'}}>
-                            {determineStatToShow()}
-                        </Grid>
-                    </Grid>
+                {buttonClicked === 2 && (
+                <ButtonGroup disableElevation orientation="horizontal" color="success" variant="text" size="small" style={{ border: 'none', backgroundColor: 'transparent' }}>
+                    <Button onClick={() => onLeftClick()} startIcon={<ArrowLeftIcon style={{ fontSize: "8vmin" }} />} style={{ borderRight: 'none', padding:'0px' }} />
+                    <Button onClick={() => onRightClick()} startIcon={<ArrowRightIcon style={{ fontSize: "8vmin" }} />} style={{ borderLeft: 'none', padding:'0px' }} />
+                </ButtonGroup>
+            )}
                 </Grid>
             </Grid>
             
+            <div className={classes.menu}>
+                <Grid container direction='column' alignItems='center'>
+                    <Grid item>
+                        <Typography variant="h6" className = {classes.title} >
+                            Statistics
+                        </Typography>
+                    </Grid>
+                    <Grid item container direction='column'>
+                        <Tooltip
+                            title="Each cell shows the average value of the edge across all matrices. Hover over a cell to see the standard deviation."
+                            placement="right"
+                            classes={{ tooltip: classes.tooltip }}>
+                            <Button
+                                className={classes.menuItem}
+                                color={buttonClicked === 0 ? "success" : "primary"}
+                                onClick={() => onStatClick(0)}
+                                style={{ textTransform:'none', fontSize:'4vmin'}}>
+                                Average Matrix
+                            </Button>
+                        </Tooltip>  
+                        <Tooltip
+                            title="Each cell shows the fraction of matrices in which the edge exists (meaning its value is greater than 0)."
+                            placement="right"
+                            classes={{ tooltip: classes.tooltip }}>
+                            <Button
+                                className={classes.menuItem}
+                                color={buttonClicked === 1 ? "success" : "primary"}
+                                onClick={() => onStatClick(1)}
+                                style={{ textTransform:'none', fontSize:"4vmin"}}>
+                                Edge Matrix
+                            </Button>
+                        </Tooltip>
+                        <Tooltip title="Toggle between result matrices." placement="right" classes={{ tooltip: classes.tooltip }}>
+                            <Button className={classes.menuItem}
+                                color={buttonClicked === 2 ? "success" : "primary"}
+                                onClick={() => onStatClick(2)}
+                                style={{ textTransform : 'none', fontSize:"4vmin" }}>
+                                {`Show Result Matrices (${matrixIndex + 1})`}
+                            </Button>
+                        </Tooltip>
+                        <Tooltip
+                            title="Download statistics as a zip file."
+                            classes={{ tooltip: classes.tooltip }}
+                            placement="right">
+                            <IconButton color="default" onClick={downloadStatistics}>
+                                <DownloadIcon style={{ fontSize: "7vmin" }} />
+                            </IconButton>
+                        </Tooltip>
+                    </Grid>
+                </Grid>
+            </div>
         </div>
-        );
+    );
 }
 export default StatisticsPage;

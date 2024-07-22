@@ -197,22 +197,22 @@ export default function TransformationPage({inputMatrixType, isIndirectMigration
   displayDownloadZip : (!outputMatrix && submittedMatrix) ? displayCalculatingMatrix: displayOutputMatrix;
   
   return (
-    <div>
-    <ExplanationCard title={cardTitle} image = {cardImage} description = {cardDescription}/>
-    <SideMenu/>
-    <LogoHeader/>
-    <Grid container direction="column" justifyContent="center" alignItems="center" 
-                    style={{ minHeight: '100vh', display: 'flex' }}>
-      {showInferenceMethod && <Grid item>{radioButton}</Grid>}
-      <Grid item ref={inputRef} style = {{marginBottom:"1vmin"}}>
-        <InputMatrixForm onSubmit={onSubmit} inputMatrixSize={inputMatrixSize} 
-        setInputMatrixSize={setInputMatrixSize} isFst={inputMatrixType === "Fst"} 
-        multipleRuns={multipleRuns} setMultipleRuns={setMultipleRuns} numRuns={numRuns}
-        setNumRuns={setNumRuns}/>
+    <div style={{marginTop:"5vmin"}}>
+      <ExplanationCard title={cardTitle} image = {cardImage} description = {cardDescription}/>
+      <SideMenu/>
+      <LogoHeader/>
+      <Grid container direction="column" justifyContent="center" alignItems="center" 
+                      style={{ minHeight: '100vh', display: 'flex' }}>
+        {showInferenceMethod && <Grid item>{radioButton}</Grid>}
+        <Grid item ref={inputRef} style = {{marginBottom:"1vmin"}}>
+          <InputMatrixForm onSubmit={onSubmit} inputMatrixSize={inputMatrixSize} 
+          setInputMatrixSize={setInputMatrixSize} isFst={inputMatrixType === "Fst"} 
+          multipleRuns={multipleRuns} setMultipleRuns={setMultipleRuns} numRuns={numRuns}
+          setNumRuns={setNumRuns}/>
+        </Grid>
+          <Grid item style={{ position:'absolute', top: margin,  width: '100%'}}>{displayOutput}
+        </Grid>
       </Grid>
-        <Grid item style={{ position:'absolute', top: margin,  width: '100%' }}>{displayOutput}
-      </Grid>
-    </Grid>
     </div>
   );
 }

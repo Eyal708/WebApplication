@@ -13,7 +13,8 @@ const useStyles = makeStyles(() => ({
     margin: "3vmin",
     transition: 'transform 0.3s ease-in-out', // Add transition
     '&:hover': { // Add hover pseudo-class
-      transform: 'scale(1.05)', // Scale up the card
+      transform: 'scale(1.08)', // Scale up the card
+     
     },
   },
   media: {
