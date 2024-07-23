@@ -7,6 +7,7 @@ import AboutPage from "./AboutPage";
 import { useState } from "react";
 export default function NewApp() {
     const [resultMatrices, setResultMatrices] = useState([]);
+    
     return (
       <div>
       <BrowserRouter basename="/">

@@ -2,7 +2,7 @@ import {useState, useEffect, useRef} from 'react';
 import React from "react";
 import {Grid} from '@material-ui/core';
 import Button from '@mui/material/Button';
-import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
+import CloudDownloadIcon from '@mui/icons-material/Download';
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import SideMenu from './SideMenu';
 import Papa from 'papaparse';
@@ -159,14 +159,14 @@ export default function TransformationPage({inputMatrixType, isIndirectMigration
         <Grid item>
           <Button  className={classes.button} variant='contained' color="info"
                   onClick={downloadOutputMatrices} size="large"
-                  startIcon={<CloudDownloadIcon style = {{fontSize:"3vmin"}}/>}  
+                  startIcon={<CloudDownloadIcon style = {{fontSize:"4vmin"}}/>}  
                   component="label">
                   Download Zip ({submittedNumRuns} files)
           </Button>
         </Grid>
         <Grid item>
           <Button className={classes.button} variant="contained" color="info" size="large"
-                  startIcon = {<QueryStatsIcon style = {{fontSize:"3vmin"}}/>} 
+                  startIcon = {<QueryStatsIcon style = {{fontSize:"4vmin"}}/>} 
                   onClick={onStatisticsClick}>
                   Summary Statistics 
           </Button>
@@ -185,7 +185,7 @@ export default function TransformationPage({inputMatrixType, isIndirectMigration
           <Grid item>
               {submittedMatrix && <Button type='button' className = {classes.button} 
                                   onClick={downloadOutputMatrix} variant='contained' 
-                                  startIcon={<CloudDownloadIcon style = {{fontSize:"3vmin"}}/>} 
+                                  startIcon={<CloudDownloadIcon style = {{fontSize:"4vmin"}}/>} 
                                   color={inputMatrixType==="Fst"? "success":"primary"} 
                                   component="label" size="large">
                 Download CSV 

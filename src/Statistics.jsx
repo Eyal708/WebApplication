@@ -17,20 +17,7 @@ import JSZip from 'jszip';
 import {CLIP_LOADER} from './constants';
 import Typography from '@material-ui/core/Typography';
 function StatisticsPage(){
-    //result matrices is any array of 2d arrays representing squared matrices. 
-    // This page should disaply the matrix which is the average of all the matrices in the array.
-    // When hovered over a cell, the user should see the standard deviation of the values in that cell.
-    // The user should also be able to download the average matrix as a csv file.
-
-    // The average matrix should be calculated as follows:
-    // For each cell in the matrix, calculate the average of the values in that cell across all matrices 
-    // in the array.
-    // The standard deviation of the values in a cell should be calculated as follows:
-    // For each matrix in the array, calculate the difference between the value in the cell and the average
-    // value in that cell. Square this difference. Sum all these squared differences. Divide by the number of
-    // matrices in the array. Take the square root of this value.
-    // The standard deviation should be displayed to 2 decimal places.
-    // The average matrix should be displayed to 2 decimal places.
+    
     const [resultMatrices, setResultMatrices] = useState([]); // An array of 2d arrays representing squared matrices
     const [averageMatrix, setAverageMatrix] = useState([]);
     const [edgeMatrix, setEdgeMatrix] = useState([]); // Will show in how many matrices the edge exists
@@ -170,6 +157,8 @@ function StatisticsPage(){
             top: '9vmin', 
             left: '1vmin',
             display: 'flex',
+            minWidth: '23vw',
+            maxWidth: '23vw',
             flexDirection: 'column',
             backgroundColor: 'white', // Optional: Add background color to the menu for better visibility
             padding: theme.spacing(2), // Optional: Add some padding around the menu items
@@ -179,7 +168,7 @@ function StatisticsPage(){
 
         title: {
             marginBottom: theme.spacing(2), // Space between title and first menu item
-            fontSize: '6vmin', // Increase font size for bigger headline
+            fontSize: '6.5vmin', // Increase font size for bigger headline
             color: 'black', // Change color, example uses Material-UI's primary color
             fontFamily: 'Roboto, sans-serif', // Correct font family
             align:"center"
@@ -187,7 +176,7 @@ function StatisticsPage(){
         
         menuItem: {
             margin: theme.spacing(2),
-            fontSize: '4vmin', // Correct font size
+            fontSize: '3.5vmin', // Correct font size
             fontFamily: 'Roboto, sans-serif', // Correct font family
             '&:hover': {
             cursor: 'pointer',
@@ -214,7 +203,7 @@ function StatisticsPage(){
 
                 <Grid item>
                 {buttonClicked === 2 && (
-                <ButtonGroup disableElevation orientation="horizontal" color="success" variant="text" size="small" style={{ border: 'none', backgroundColor: 'transparent' }}>
+                <ButtonGroup disableElevation orientation="horizontal" color="success" variant="text" size="small" style={{ border: 'none' }}>
                     <Button onClick={() => onLeftClick()} startIcon={<ArrowLeftIcon style={{ fontSize: "8vmin" }} />} style={{ borderRight: 'none', padding:'0px' }} />
                     <Button onClick={() => onRightClick()} startIcon={<ArrowRightIcon style={{ fontSize: "8vmin" }} />} style={{ borderLeft: 'none', padding:'0px' }} />
                 </ButtonGroup>
@@ -238,7 +227,7 @@ function StatisticsPage(){
                                 className={classes.menuItem}
                                 color={buttonClicked === 0 ? "success" : "primary"}
                                 onClick={() => onStatClick(0)}
-                                style={{ textTransform:'none', fontSize:'4vmin'}}>
+                                style={{ textTransform:'none', fontSize:'3.5vmin'}}>
                                 Average Matrix
                             </Button>
                         </Tooltip>  
@@ -250,7 +239,7 @@ function StatisticsPage(){
                                 className={classes.menuItem}
                                 color={buttonClicked === 1 ? "success" : "primary"}
                                 onClick={() => onStatClick(1)}
-                                style={{ textTransform:'none', fontSize:"4vmin"}}>
+                                style={{ textTransform:'none', fontSize:"3.5vmin"}}>
                                 Edge Matrix
                             </Button>
                         </Tooltip>
@@ -258,7 +247,7 @@ function StatisticsPage(){
                             <Button className={classes.menuItem}
                                 color={buttonClicked === 2 ? "success" : "primary"}
                                 onClick={() => onStatClick(2)}
-                                style={{ textTransform : 'none', fontSize:"4vmin" }}>
+                                style={{ textTransform : 'none', fontSize:"3.5vmin" }}>
                                 {`Show Result Matrices (${matrixIndex + 1})`}
                             </Button>
                         </Tooltip>
@@ -267,7 +256,7 @@ function StatisticsPage(){
                             classes={{ tooltip: classes.tooltip }}
                             placement="right">
                             <IconButton color="default" onClick={downloadStatistics}>
-                                <DownloadIcon style={{ fontSize: "7vmin" }} />
+                                <DownloadIcon style={{ fontSize: "7.5vmin" }} />
                             </IconButton>
                         </Tooltip>
                     </Grid>

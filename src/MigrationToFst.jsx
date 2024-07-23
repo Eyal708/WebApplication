@@ -15,6 +15,7 @@ export default function MigrationToFst() {
       <InlineMath math="F_{st}" />
     </>
   );
+  
   return <TransformationPage inputMatrixType="Migration" cardTitle = 
                             {cardTitle} cardImage = {FstImage} cardDescription={migrationExplanation} />
 }

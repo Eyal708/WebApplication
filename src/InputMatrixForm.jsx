@@ -6,7 +6,7 @@ import { Checkbox, FormControlLabel } from '@material-ui/core';
 import { Grid,  TextField, ButtonGroup} from '@material-ui/core';
 import Button from '@mui/material/Button';
 import InputMatrix from './InputMatrix';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import CloudUploadIcon from '@mui/icons-material/Upload'
 import { makeStyles } from '@material-ui/core/styles';
 import { Tooltip, IconButton} from '@material-ui/core';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
@@ -118,7 +118,7 @@ function InputMatrixForm({onSubmit, inputMatrixSize, setInputMatrixSize, isFst, 
           }
           // check if matrix size is 2 or more
           if (matrix.length < 2) {
-            alert('Matrix size must be at least 2');
+            alert('Matrix size must be at least 2X2');
             return;
           }
           setFileName(file.name);

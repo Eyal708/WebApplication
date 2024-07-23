@@ -9,7 +9,7 @@ import './index.css';
 const useStyles = makeStyles((theme) => ({
   menu: {
     position: 'fixed',
-    top: '30vmin', // Adjust based on your logo's position
+    top: '28vh', // Adjust based on your logo's position
     right: '1vmin',
     display: 'flex',
     flexDirection: 'column',
@@ -50,6 +50,7 @@ const ScrollMenu = () => {
     { id: 'setting', label: 'Setting' },
     { id: 'migrationToFst', label: <>Migration <span style={{ marginLeft: '5px' }}></span>{rightArrow}<span style={{ marginRight: '5px' }}></span><InlineMath math="F_{st}" /></> },
     { id: 'fstToMigration', label: <><InlineMath math="F_{st}" /> <span style={{ marginLeft: '5px' }}></span>{rightArrow}<span style={{ marginRight: '5px' }}></span> Migration </> },
+    { id: 'code', label: 'Code'},
     { id: 'references', label: 'References' },
     { id: 'credits', label: 'Credits' },
   ];
