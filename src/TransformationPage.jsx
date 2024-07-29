@@ -4,6 +4,7 @@ import {Grid} from '@material-ui/core';
 import Button from '@mui/material/Button';
 import CloudDownloadIcon from '@mui/icons-material/Download';
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
+import ReportIcon from '@mui/icons-material/Report';
 import SideMenu from './SideMenu';
 import Papa from 'papaparse';
 import JSZip from 'jszip';
@@ -27,8 +28,9 @@ export default function TransformationPage({inputMatrixType, isIndirectMigration
   const [submittedNumRuns, setSubmittedNumRuns] = useState(2);
   const [submittedMultipleRuns, setSubmittedMultipleRuns] = useState(false);
   const [running, setRunning] = useState(false); // State to track if the worker is running
-  const outputRef = useRef(null); // Create a ref for the output matrix
+  const [error, setError] = useState(false); // Indicates if there was an error in the worker when running the Python code
   const inputRef = useRef(null) ; 
+  const hasMountedRef = useRef(false);
   const workerRef = useRef (null);
 
   useEffect(() => { // Create a new worker when the component mounts
@@ -39,17 +41,22 @@ export default function TransformationPage({inputMatrixType, isIndirectMigration
     }, []);
 
   useEffect(() => {
-    if (outputMatrix && outputRef.current) {
-      outputRef.current.scrollIntoView({ behavior: 'smooth' }); // Scroll to the output matrix when it's displayed
+    // scroll to the vey bottom of the page when a calculation is done
+    if (hasMountedRef.current) {
+      if (!running) {
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+      }
+    } else {
+      hasMountedRef.current = true;
     }
-  }, [outputMatrix]);
+  }, [running]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       if (inputRef.current) {
         const bottomInVh = ((inputRef.current.offsetTop + inputRef.current.offsetHeight) 
                             / window.innerHeight) * 100;
-        setMargin(`${bottomInVh + 2}vh`);
+        setMargin(`${bottomInVh + 5}vh`);
       }
     }, 0);
   
@@ -62,6 +69,9 @@ export default function TransformationPage({inputMatrixType, isIndirectMigration
     const handleMessage = (e) => {
         const { request_id: response_id, result } = e.data;
         if (response_id === request_id) {
+          if (result === undefined) {
+            setError(true);
+          } 
           if (multipleRuns) {
             setResultMatrices(result);
           } else {
@@ -98,9 +108,8 @@ export default function TransformationPage({inputMatrixType, isIndirectMigration
     setResultMatrices([]);
     const newMatrix = matrix.map(row=>[...row]);
     setSubmittedMatrix(newMatrix);
+    setError(false);
     setRunning(true);
-
-    
   }    
   
   const downloadOutputMatrix = () => {
@@ -132,6 +141,15 @@ export default function TransformationPage({inputMatrixType, isIndirectMigration
     
   const displayCalculatingMatrix = 
     CLIP_LOADER;
+
+  // This should be an error message diaplyed when an error occurs in the worker.
+  //font should br Roboto, color red, font size 2.5vmin and text should appear at the center of the page.
+  const displayError = <div style={{fontFamily: 'Roboto', color: 'red', fontSize: '3vmin', 
+                            textAlign: 'center', marginTop: '2vh'}}>
+                          <ReportIcon style={{fontSize: '8vmin', color:'red'}}/> <br/>
+                          An error occurred while calculating the output matrix. 
+                          Make sure the input matrix is valid.
+                      </div>;
   
   const useStyles = makeStyles({
     button: buttonStyle,
@@ -178,7 +196,7 @@ export default function TransformationPage({inputMatrixType, isIndirectMigration
     <Grid container direction='column' spacing={1}
           style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', 
           marginTop: "2vmin"}}>
-          <Grid item ref={outputRef} style={{ borderCollapse: 'collapse', margin: '0 auto'}}>
+          <Grid item style={{ borderCollapse: 'collapse', margin: '0 auto'}}>
               <OutputMatrix outputMatrix={outputMatrix} matrixSize={submittedMatrix.length}
                               isFst={inputMatrixType !== "Fst"} /> 
           </Grid>
@@ -193,11 +211,13 @@ export default function TransformationPage({inputMatrixType, isIndirectMigration
           </Grid>    
     </Grid>;
 
-  const displayOutput = submittedMultipleRuns && submittedMatrix && resultMatrices.length == submittedNumRuns? 
-  displayDownloadZip : (!outputMatrix && submittedMatrix) ? displayCalculatingMatrix: displayOutputMatrix;
+  const displayOutput = 
+                        error ? displayError : 
+                        submittedMultipleRuns && submittedMatrix && resultMatrices.length == submittedNumRuns ? 
+                        displayDownloadZip : running ? displayCalculatingMatrix: displayOutputMatrix
   
   return (
-    <div style={{marginTop:"5vmin"}}>
+    <div style={{marginTop:"3vmin", marginBottom:"3vmin"}}>
       <ExplanationCard title={cardTitle} image = {cardImage} description = {cardDescription}/>
       <SideMenu/>
       <LogoHeader/>
@@ -210,7 +230,7 @@ export default function TransformationPage({inputMatrixType, isIndirectMigration
           multipleRuns={multipleRuns} setMultipleRuns={setMultipleRuns} numRuns={numRuns}
           setNumRuns={setNumRuns}/>
         </Grid>
-          <Grid item style={{ position:'absolute', top: margin,  width: '100%'}}>{displayOutput}
+          <Grid item style={{ top: margin,  width: '100%'}}>{displayOutput}
         </Grid>
       </Grid>
     </div>

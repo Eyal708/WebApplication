@@ -10,7 +10,7 @@ import ListItemText from '@mui/material/ListItemText';
 import HomeIcon from '@mui/icons-material/Home';
 import InfoIcon from '@mui/icons-material/Info';
 import HubRoundedIcon from '@mui/icons-material/HubRounded';
-import MenuOpenIcon from '@mui/icons-material/MenuOpen';
+import MenuOpenIcon from '@mui/icons-material/Menu';
 import Typography from '@mui/material/Typography'; 
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
@@ -59,7 +59,7 @@ export default function SideMenu() {
   return (
     <div style={{position:"fixed", zIndex: 2 ,bottom: 0, right: 0 }}>
       <Button Button onClick={toggleDrawer(true)} size='large'>
-        <MenuOpenIcon className={classes.menuButton} fontSize='large'  />
+        <MenuOpenIcon className={classes.menuButton} style={{fontSize:'7vmin'}}  />
       </Button>
       <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
         {DrawerList}

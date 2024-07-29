@@ -157,8 +157,8 @@ function StatisticsPage(){
             top: '9vmin', 
             left: '1vmin',
             display: 'flex',
-            minWidth: '23vw',
-            maxWidth: '23vw',
+            minWidth: '25vw',
+            maxWidth: '25vw',
             flexDirection: 'column',
             backgroundColor: 'white', // Optional: Add background color to the menu for better visibility
             padding: theme.spacing(2), // Optional: Add some padding around the menu items

@@ -6,9 +6,10 @@ import StatisticsPage from "./Statistics";
 import AboutPage from "./AboutPage";
 import { useState } from "react";
 export default function NewApp() {
-    const [resultMatrices, setResultMatrices] = useState([]);
     
-    return (
+  const [resultMatrices, setResultMatrices] = useState([]);  
+   
+  return (
       <div>
       <BrowserRouter basename="/">
         <Routes>

@@ -12,22 +12,27 @@ result = ${functionToRun}
 result
 `;
                 // Run Python code in Pyodide
-                if (multipleRuns) {
-                    const resultMatrices = [];
-                    for (let i = 0; i < numRuns; i++) {
-                        const result = JSON.parse(await pyodide.runPythonAsync(pythonCode.trim()));
-                        resultMatrices.push(result.matrix);
+                try {
+                    if (multipleRuns) {
+                        const resultMatrices = [];
+                        for (let i = 0; i < numRuns; i++) {
+                            const result = JSON.parse(await pyodide.runPythonAsync(pythonCode.trim()));
+                            resultMatrices.push(result.matrix);
+                        }
+                        return resultMatrices;
                     }
-                    return resultMatrices;
+                    else {
+                        const result = JSON.parse(await pyodide.runPythonAsync(pythonCode.trim()));
+                        return result.matrix;
+                        };
+                } catch (error) {
+                    return undefined;
+                
                 }
-                else {
-                    const result = JSON.parse(await pyodide.runPythonAsync(pythonCode.trim()));
-                    return result.matrix;
-                    };
-                }
+    }
 
-            if (inputMatrix) {
-                return await runPythonCode();
-            }
+    if (inputMatrix) {
+        return await runPythonCode();
+    }
 }
         
