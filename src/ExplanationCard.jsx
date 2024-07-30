@@ -40,7 +40,7 @@ export default function ExplanationCard({title, description, image}) {
     }}>
         <CardMedia
         component="img"
-        height="150vh"
+        height="180vh"
         image={image}
         alt="Explanation"
       />

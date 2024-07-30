@@ -10,6 +10,7 @@
 
 # production
 /build
+/CSV
 
 # misc
 .DS_Store
