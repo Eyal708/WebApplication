@@ -1,5 +1,5 @@
-import MigrationImage from './Images/DNA.jpg';
-import FstImage from './Images/Migration.jpg';
+import MigrationImage from './Images/DNA.svg';
+import FstImage from './Images/Migration.svg';
 import HomePageCard from './HomePageCard';
 import LogoHeader from './LogoHeader';
 import {fst, rightArrow} from './constants';

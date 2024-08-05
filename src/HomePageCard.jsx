@@ -18,7 +18,7 @@ const useStyles = makeStyles(() => ({
     },
   },
   media: {
-    height: '25vh',
+    height: '27vh',
   },
 }));
 

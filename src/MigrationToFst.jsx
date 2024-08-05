@@ -1,7 +1,7 @@
 import React from "react";
 import './index.css';
 import {fst, rightArrow, migrationExplanation} from './constants';
-import FstImage from './Images/Migration.jpg';
+import FstImage from './Images/Migration.svg';
 import TransformationPage from './TransformationPage';
 import { InlineMath } from "react-katex";
 

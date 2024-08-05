@@ -32,15 +32,15 @@ export default function ExplanationCard({title, description, image}) {
       position: 'absolute', 
       top: '1vh', 
       left: '1vh',  
-      minWidth: '25vw',
+      minWidth: '27vw',
       maxWidth: '25vw',
-      minHeight: '30vh',
+      minHeight: '10vh',
       maxHeight: '90vh',
       overflow: 'auto', 
     }}>
         <CardMedia
         component="img"
-        height="180vh"
+        height="200vh"
         image={image}
         alt="Explanation"
       />

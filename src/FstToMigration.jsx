@@ -7,7 +7,7 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import './index.css';
 import {fst, rightArrow, fstExplanation} from './constants';
-import MigrationImage from './Images/DNA.jpg';
+import MigrationImage from './Images/DNA.svg';
 import TransformationPage from './TransformationPage';
 import { InlineMath } from "react-katex";
 
