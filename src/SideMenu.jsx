@@ -57,11 +57,11 @@ export default function SideMenu() {
   );
 
   return (
-    <div style={{position:"fixed", zIndex: 2 ,bottom: 0, right: 0 }}>
+    <div style={{position:"fixed", zIndex: 2 ,bottom: 0, left: 0 }}>
       <Button Button onClick={toggleDrawer(true)} size='large'>
         <MenuOpenIcon className={classes.menuButton} style={{fontSize:'7vmin'}}  />
       </Button>
-      <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
+      <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
         {DrawerList}
       </Drawer>
     </div>

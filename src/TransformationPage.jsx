@@ -175,15 +175,15 @@ export default function TransformationPage({inputMatrixType, isIndirectMigration
                   marginTop:'2vh'}}>
       <Grid container direction='row' spacing={1} alignContent='center' justifyContent='center'>
         <Grid item>
-          <Button  className={classes.button} variant='contained' color="info"
-                  onClick={downloadOutputMatrices} size="large"
+          <Button  className={classes.button} variant='contained' color="success" size="med"
+                  onClick={downloadOutputMatrices}  style={{ fontSize: '3vmin' }}
                   startIcon={<CloudDownloadIcon style = {{fontSize:"4vmin"}}/>}  
                   component="label">
                   Download Zip ({submittedNumRuns} files)
           </Button>
         </Grid>
         <Grid item>
-          <Button className={classes.button} variant="contained" color="info" size="large"
+          <Button className={classes.button} variant="contained" style={{ fontSize: '3vmin' }} color="success" size="med"
                   startIcon = {<QueryStatsIcon style = {{fontSize:"4vmin"}}/>} 
                   onClick={onStatisticsClick}>
                   Summary Statistics 
@@ -202,10 +202,10 @@ export default function TransformationPage({inputMatrixType, isIndirectMigration
           </Grid>
           <Grid item>
               {submittedMatrix && <Button type='button' className = {classes.button} 
-                                  onClick={downloadOutputMatrix} variant='contained' 
-                                  startIcon={<CloudDownloadIcon style = {{fontSize:"4vmin"}}/>} 
+                                  onClick={downloadOutputMatrix} variant='contained' style={{ fontSize: '2.5vmin' }} 
+                                  startIcon={<CloudDownloadIcon style = {{fontSize:"3vmin"}}/>} 
                                   color={inputMatrixType==="Fst"? "success":"primary"} 
-                                  component="label" size="large">
+                                  component="label" size="med">
                 Download CSV 
                 </Button>}
           </Grid>    

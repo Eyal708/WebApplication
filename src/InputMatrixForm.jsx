@@ -144,13 +144,13 @@ function InputMatrixForm({onSubmit, inputMatrixSize, setInputMatrixSize, isFst, 
             <Grid item style = {{marginTop:"0.5vmin"}}>  
               <ButtonGroup variant="contained" color={isFst ? "primary": "success"}
                aria-label="contained primary button group" 
-                size="large">
-                <Button Button className={classes.button} type="submit" startIcon={<PlayIcon 
+                size="med">
+                <Button Button className={classes.button} style={{ fontSize: '2.5vmin' }}  type="submit" startIcon={<PlayIcon 
                         style={{ fontSize: '3vmin' }} />}>Run</Button>
-                <Button Button className={classes.button} type='button' startIcon = {<ClearIcon
+                <Button Button className={classes.button} style={{ fontSize: '2.5vmin' }} type='button' startIcon = {<ClearIcon
                         style={{ fontSize: '3vmin' }}/>} 
                   onClick={onClear}>Clear</Button>
-                <Button Button className={classes.button} 
+                <Button Button className={classes.button} style={{ fontSize: '2.5vmin' }} 
                         component="label" startIcon={<CloudUploadIcon 
                         style={{ fontSize: '3vmin' }}/>}>
                   Upload CSV 
@@ -213,9 +213,9 @@ function InputMatrixForm({onSubmit, inputMatrixSize, setInputMatrixSize, isFst, 
               </Tooltip>  
             </Grid>
             <Grid item style={{ marginLeft: '0vw' }}>
-              <Button className={classes.button} type="button" onClick={handleSizeChange} variant="contained"
+              <Button className={classes.button} type="button" style={{ fontSize: '2.5vmin' }} onClick={handleSizeChange} variant="contained"
                       startIcon = {<ChangeIcon style={{ fontSize: '3vmin' }}/>}  
-                      color={isFst ? "primary": "success"} size="large">
+                      color={isFst ? "primary": "success"} size="med">
                 Matrix Size
               </Button>
             </Grid>

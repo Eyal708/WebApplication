@@ -28,7 +28,7 @@ export default function FstToMigration({ resultMatrices, setResultMatrices}) {
   );
 
   const radioButton = <FormControl>
-      <FormLabel id="inference-method" style={{fontSize:"2vmin"}}>Inference Method</FormLabel>
+      <FormLabel id="inference-method" style={{fontSize:"2.5vmin"}}>Inference Method</FormLabel>
       <RadioGroup
         row aria-labelledby="inference-method"
         name="row-radio-buttons-group"
@@ -38,10 +38,10 @@ export default function FstToMigration({ resultMatrices, setResultMatrices}) {
       >
         <FormControlLabel value="Direct" control={<Radio sx={{
           '& .MuiSvgIcon-root': {fontSize: "3vmin",},}}/>} style = {{fontSize :"2vmin"}} 
-          label={<Typography style={{fontSize: "2vmin"}}>Direct</Typography>}/>
+          label={<Typography style={{fontSize: "2.5vmin"}}>Direct</Typography>}/>
         <FormControlLabel value="Indirect" control={<Radio sx={{
           '& .MuiSvgIcon-root': {fontSize: "3vmin",},}}/>}
-          label={<Typography style={{fontSize: "2vmin"}}>Indirect</Typography>}/>
+          label={<Typography style={{fontSize: "2.5vmin"}}>Indirect</Typography>}/>
       </RadioGroup>
     </FormControl>
 return (

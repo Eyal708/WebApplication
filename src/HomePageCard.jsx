@@ -8,7 +8,7 @@ import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(() => ({
   root: {
-    width: '28vw',
+    width: '30vw',
     height: '50vh',
     margin: "3vmin",
     transition: 'transform 0.3s ease-in-out', // Add transition

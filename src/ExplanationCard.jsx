@@ -35,7 +35,7 @@ export default function ExplanationCard({title, description, image}) {
       minWidth: '27vw',
       maxWidth: '25vw',
       minHeight: '10vh',
-      maxHeight: '90vh',
+      maxHeight: '80vh',
       overflow: 'auto', 
     }}>
         <CardMedia
@@ -65,7 +65,7 @@ export default function ExplanationCard({title, description, image}) {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography paragraph fontSize='2.2vmin'>
+          <Typography paragraph fontSize='2.5vmin'>
             {description}
           </Typography>
         </CardContent>
