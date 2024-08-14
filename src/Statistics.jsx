@@ -255,7 +255,7 @@ function StatisticsPage(){
                             title="Download statistics as a zip file."
                             classes={{ tooltip: classes.tooltip }}
                             placement="right">
-                            <IconButton color="default" onClick={downloadStatistics}>
+                            <IconButton color="success" onClick={downloadStatistics}>
                                 <DownloadIcon style={{ fontSize: "7.5vmin" }} />
                             </IconButton>
                         </Tooltip>

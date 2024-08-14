@@ -13,6 +13,7 @@
     "@testing-library/react": "^12.1.5",
     "@testing-library/user-event": "^13.5.0",
     "core-js": "^3.37.1",
+    "g": "^2.0.1",
     "jszip": "^3.10.1",
     "node-fetch": "^2.6.1",
     "papaparse": "^5.4.1",
