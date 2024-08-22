@@ -38,7 +38,7 @@ export default function SideMenu() {
           { text: 'Home', path: "/" },
           { text: <><InlineMath math="F_{st}"/> {rightArrow} Migration</>, path: "/FstToMigration" },
           { text: <>Migration {rightArrow} <InlineMath math="F_{st}"/></>, path: "/MigrationToFst" },
-          { text: 'About Our Software', path: "/About" }
+          { text: 'About This Software', path: "/About" }
         ].map((item, index) => (
           <ListItem key={index} disablePadding>
             <ListItemButton component={Link} to={item.path}>

@@ -8,6 +8,7 @@ import 'katex/dist/katex.min.css';
 import { InlineMath } from 'react-katex';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ScrollMenu from './ScrollMenu';
+const boldFst = <InlineMath math="\boldsymbol{F_{st}}" />;
 // Create a theme instance and set the typography's font family
 const theme = createTheme({
 
@@ -33,12 +34,13 @@ const About = () => {
           <Grid container spacing={2} className="about-container" direction="column" paddingLeft="15vmin" 
                 paddingTop="8vmin">
             <Grid item>
-              <Typography variant="h3" color="GrayText">About Our Software</Typography>
+              <Typography variant="h3" color="GrayText">About This Software</Typography>
             </Grid>
             <Grid item>
               <Typography color="darkslategrey" style={{maxWidth:"70%", wordWrap:"break-word"}}>
-                {`This document describes the scientific background of our software and how it can be used to explore the \
-                  connection between`} <InlineMath math="F_{st}"/> {`and Migration in subpopulations of wild species.`}   
+                {`This document describes the scientific background of this software and how it can be used to explore 
+                the connection between pairwise`} {fst} {`and Migration in populations.`}
+   
               </Typography>
             </Grid>
             <Grid item> 
@@ -46,9 +48,8 @@ const About = () => {
             </Grid>
             <Grid item>
               <Typography color="darkslategrey" style={{maxWidth:"70%", wordWrap:"break-word"}}>
-                  {`In our model, we consider a set of subpopulations of size`} <InlineMath math = 
-                  "n \in \mathbf {N}"/>{", each of size"} <InlineMath math = "N"/> 
-                  {` diploid individuals. For a set of subpopulations, we can construct three matrices: `} 
+                  {`In our model, we consider a set of`} <InlineMath math = "n"/> {`subpopulations, each with the same number of individuals.
+                   For a set of subpopulations, we can construct three matrices:`}
                   <ol>
                     <li style={{marginBottom:"1vmin"}}>
                       {"A pairwise"} <InlineMath math="F_{st}"/> 
@@ -60,38 +61,39 @@ const About = () => {
                     <li style={{marginBottom:"1vmin"}}>
                       {"A pairwise coalescence times matrix ("}<InlineMath math="T"/>{") which is a squared, "} 
                       {"non-negative, symmetrical matrix in which entry ["}<InlineMath math="i, j"/>
-                      {"] is the expected coalescence time of a randomly sampled gene lineage from subpopulation "}
-                      <InlineMath math ="i"/> {" and a randomly sampled gene lineage from subpopulation"} <InlineMath math="j"/>
-                       {" and entry ["}<InlineMath math="i, i"/>{"] is the expected coalescence time of two"} 
-                       {" randomly sampled gene lineages from subpopulation"} <InlineMath math="i"/>{"."}
+                      {"] is the expected coalescence time of a randomly sampled individual allele from subpopulation "}
+                      <InlineMath math ="i"/> {" and a randomly sampled individual allele from subpopulation"} <InlineMath math="j"/>{"."}
+                       {" The diagonal entries ["}<InlineMath math="i, i"/>{"] are the expected coalescence time of two"} 
+                       {" randomly sampled individual alleles from subpopulation"} <InlineMath math="i"/>{"."}
                     </li>
                     <li>
                       {"A migration matrix, which is a squared, non-negative matrix with zeros on the diagonal ("}
                       <InlineMath math="M"/>{"), where entry ["}<InlineMath math="i, j"/>{"] represents the"}
-                      {" average number of individuals that migrate from subpopulation "}<InlineMath math="j"/>
+                      {" number of individuals that migrate from subpopulation "}<InlineMath math="j"/>
                       {" to subpopulation"} <InlineMath math="i"/>{" in each generation. The "}
                        <InlineMath math="M"/>{" matrix is not necessarily symmetric, because migration may be"}
                        {" asymmetrical (e.g., more migration from "}<InlineMath math="i"/>{" to "}<InlineMath math="j"/>
-                       {" than the other way around). Our model assumes the migration matrix is conservative, "}
+                       {" than the other way around). To comply with the equations from Wilkinson-Herbots (2003), our model assumes the migration matrix is conservative, "} 
                        {"meaning the overall incoming and outgoing migration is equal for each subpopulation. "}
-                       {"In other words, we assume that for each "}<InlineMath math="i \in n"/>
+                       {"In other words, we assume that for each "}<InlineMath math="i"/>
                        {", the sum of the entries in row "}<InlineMath math="i"/>{" is equal to the sum of the entries in column "}
                         <InlineMath math="i"/>{"."}
                     </li>
                   </ol>
                   {"Under our model, the connection between "}<InlineMath math="M"/>{" and "}<InlineMath math="T"/>
                   {" is given by a linear system of equations developed by "} 
-                  <a href="https://www.cambridge.org/core/journals/advances-in-applied-probability/article/abs/coalescence-times-and-fst-values-in-subdivided-populations-with-symmetric-structure/62A13681772FA4282808954FB45F16AA" target="_blank" rel="noopener noreferrer">Wilkinson-Herbots (2003)</a> 
+                  <a href="https://www.cambridge.org/core/journals/advances-in-applied-probability/article/abs/coalescence-times-and-fst-values-in-subdivided-populations-with-symmetric-structure/62A13681772FA4282808954FB45F16AA" target="_blank" rel="noopener noreferrer">Wilkinson-Herbots</a> 
                   {" [1] and the connection between "}<InlineMath math="T"/>{" and "}<InlineMath math="F"/>
                   {" is given by a nonlinear system of equations developed by "}
-                  <a href="https://www.cambridge.org/core/journals/genetics-research/article/inbreeding-coefficients-and-coalescence-times/FCC418CBC6F021B741C83FDE6A0E7558" target="_blank" rel="noopener noreferrer">Slatkin (1991)</a>  
-                  {" [2]. Combining these two systems of equations, we can calculate the "}<InlineMath math="F_{st}"/>
+                  <a href="https://www.cambridge.org/core/journals/genetics-research/article/inbreeding-coefficients-and-coalescence-times/FCC418CBC6F021B741C83FDE6A0E7558" target="_blank" rel="noopener noreferrer">Slatkin</a>  
+                  {" [2]. Combining these two systems of equations, we can compute the "}<InlineMath math="F_{st}"/>
                   {" matrix given the migration matrix. However, given an "}<InlineMath math="F_{st}"/>
-                  {" matrix there are usually infinite possible corresponding migration matrices [3]. Our software "}
-                  {"offers two different tools: one takes as input a migration matrix and gives the corresponding "}
-                  {"distinct "}<InlineMath math="F_{st}"/>{" matrix, and the other takes as input an "}<InlineMath math="F_{st}"/>
-                  {" matrix and gives possible corresponding migration matrices and summary statistics "}
-                  {"for the results."}
+                  {" matrix there are most often infinite possible corresponding migration matrices [3]. Our software "}
+                  {"offers two different tools:"} 
+                  <b> Migration {rightArrow} {boldFst} </b> 
+                  {",  which takes as input a migration matrix and gives the corresponding unique "}{fst}{" matrix, and"}
+                  <b> {boldFst} {rightArrow} Migration</b>{", which takes as input an "}{fst}{" matrix and gives possible corresponding migration matrices and summary statistics for the results "}
+                  {" if multiple possible matrices are inferred."}
               </Typography>
             </Grid>
             <Grid item>
@@ -101,12 +103,10 @@ const About = () => {
             </Grid>
             <Grid item>
               <Typography color="darkslategrey" style={{maxWidth:"70%", wordWrap:"break-word"}}>
-                {`This tool takes as input a conservative migration matrix and gives the corresponding distinct `} 
-                <InlineMath math="F_{st}"/> {` matrix. The `} 
-                <InlineMath math="F_{st}"/> {` matrix is calculated by first solving the linear system of equations developed by Wilkinson-Herbots (2003)`}
-                {", which results the corresponding coalescence times matrix, and then solving the nonlinear system of equations developed by Slatkin (1991) "}
-                {" with the coalescence times matrix. A solution is guaranteed only if the migration matrix is conservative!"}
-                {" Providing a non-conservative migration matrix violates the assumptions of our model and might cause an error."}
+                {`This tool generates the (unique) pairwise`} {fst} {` matrix that corresponds to an input migration matrix. The`}
+                {` matrix is computed by first solving the linear system of migration → coalescence equations (Wilkinson-Herbots, 2003), which results the corresponding coalescence times matrix,`}
+                {` and then solving the nonlinear system of coalescence →`} {fst} {` equations (Slatkin, 1991) with the coalescence times matrix.`}
+                {` A solution is guaranteed only if the migration matrix is conservative! Providing a non-conservative migration matrix violates the assumptions of our model and might cause an error.`}
               </Typography>
             </Grid>
             <Grid item>
@@ -116,21 +116,14 @@ const About = () => {
             </Grid>
             <Grid item>
               <Typography color="darkslategrey" style={{maxWidth:"70%", wordWrap:"break-word"}}>
-                {`This tool takes as input an `}<InlineMath math="F_{st}"/> {` matrix and gives possible corresponding migration matrices and summary statistics for the results. `}
-                {"The migration matrices can be inferred using two different methods: the 'Direct' method constructs "}
-                {"the full reverse transformation from "}<InlineMath math="F_{st}"/> {"to migration and solves "}
-                {"this nonlinear system of equations numerically. Each run results in a different solution because"}
-                {" a random starting point is given to the numerical solver. The 'Indirect' method first constructs "}
-                {"the reverse transformation from"} <InlineMath math="F_{st}"/> {"to coalescence times and solves "}
-                {"this nonlinear system of equations numerically. Then, the migration matrix is calculated analytically from the "}
-                {"coalescence times matrix using the reverse transformation from coalescence times to migration, "}
-                {"with the addition of equations to enforce conservative migration. Each run results in a different solution because"}
-                {" a random starting point is given to the numerical solver when solving the transformation from"} <InlineMath math="F_{st}"/> {"to coalescence times."}
-                {" Note that for both methods, the result migration matrix might not be conservative (even if the input "}
-                <InlineMath math="F_{st}"/> {" matrix originated from a conservative migration matrix), "} 
-                {" because the solution is not guaranteed to be optimal "}
-                {" for the given "}<InlineMath math="F_{st}"/> {" matrix."}
-              </Typography>
+                {`This tool generates migration matrices that correspond to an input pairwise`} {fst} {` matrix. The `} {fst} {rightArrow} {` migration transformation is done by reversing `} 
+                {` coalescence `} {rightArrow} {fst} {` equations (Slatkin, 1991), and then reversing migration `} {rightArrow} {` coalescence equations (Wilkinson-Herbots, 2003). `} 
+                {` Two options for utilizing these equations are available: (i) 'Direct', in which the reverse transformation `} {fst} {rightArrow} {` migration is directly solved numerically, randomly selecting a starting point for the numerical solution; `}
+                {` (ii) 'Indirect'- first the `} {fst} {rightArrow} {` coalescence transformation is solved numerically with a random starting point, and then the  coalescence `} {rightArrow} {` migration transformation is solved analytically. `} 
+                {` By selecting 'Multiple Runs', you can run the selected method on your input `} {fst} {` matrix multiple times, using different starting points for the numerical solution, generating several possible migration matrices. `} 
+                {"Summary statistics of multiple matrices can be viewed and downloaded on the `statistics page’."} <br></br> {"Note that for both methods, the result migration matrix might not be conservative (even if the input"} {fst} {" matrix originated from a conservative migration matrix), "}
+                {"because the solution is not guaranteed to be optimal for a given "} {fst} {" matrix."}
+                </Typography>
             </Grid>
             <Grid item>
               <Typography variant="h4" id="code" color="GrayText">
@@ -156,14 +149,13 @@ const About = () => {
               <Typography color="darkslategrey" style={{maxWidth:"70%", wordWrap:"break-word"}}>
                 <ol>
                   <li>
-                    Wilkinson-Herbots, H.M. (2003). Coalescence times and F<sub>ST</sub> values in subdivided populations with symmetric structure. <i>Advances in Applied Probability</i>, 35(2), 474-491. Available at: <a href="https://www.cambridge.org/core/journals/advances-in-applied-probability/article/abs/coalescence-times-and-fst-values-in-subdivided-populations-with-symmetric-structure/62A13681772FA4282808954FB45F16AA" target="_blank" rel="noopener noreferrer">Cambridge University</a>
+                  Wilkinson-Herbots, HM  (2003). Coalescence times and F<sub>ST</sub> values in subdivided populations with symmetric structure. <i>Advances in Applied Probability</i>, 35(2), 474-491. 
                   </li>
                   <li>
-                    Slatkin, M. (1991). Inbreeding coefficients and coalescence times. <i>Genetic Research</i>, 58(2), 167-175. Available at: <a href="https://www.cambridge.org/core/journals/genetics-research/article/inbreeding-coefficients-and-coalescence-times/FCC418CBC6F021B741C83FDE6A0E7558" target="_blank" rel="noopener noreferrer">Cambridge University</a>
+                    Slatkin, M (1991). Inbreeding coefficients and coalescence times. <i>Genetic Research</i>, 58(2), 167-175. 
                   </li>
                   <li>
-                    Xiran Liu Noah A. Rosenberg, G. G. Can a migration matrix be inferred from a matrix of
-                    pairwise FST values? In prep.
+                    Liu X, Rosenberg NA, Greenbaum G (in prep) Can a migration matrix be inferred from a matrix of pairwise FST values? 
                   </li>
                 </ol>
               </Typography>
@@ -176,13 +168,9 @@ const About = () => {
             </Grid>
             <Grid item>
               <Typography color="darkslategrey" style={{maxWidth:"70%", wordWrap:"break-word"}}>
-                This software was developed at <a href="https://greenbaumlab.com" target="_blank" rel="noopener noreferrer">Greenbaum Lab</a> by:
-                <ul>
-                  <li>Eyal Haluts</li>
-                  <li>Gili Greenbaum</li>
-                </ul>
-                With the assistance of Keith Harris.  <br/>
-                For any questions, you can send an email to: <a href="mailto:eyal.haluts@mail.huji.ac.il">eyal.haluts@mail.huji.ac.il</a>
+                This software was developed at <a href="https://greenbaumlab.com" target="_blank" rel="noopener noreferrer">Greenbaum Lab</a> by
+                Eyal Haluts, with the assistance of Keith Harris. <br/>
+                For any questions, please send inquiries to: <a href="mailto:eyal.haluts@mail.huji.ac.il">eyal.haluts@mail.huji.ac.il</a>.
               </Typography>
             </Grid>
           </Grid>
